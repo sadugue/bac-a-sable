@@ -109,7 +109,7 @@
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
                     var years=[]; //years.length;
-                    var year=annee(data[0][1]);
+                    var year=annee(Object.keys(data[0][1]));
                     years.push(year);
                     
         
