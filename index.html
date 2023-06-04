@@ -100,8 +100,10 @@
             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
-
+                    var years=[]
                     var year=2010;
+                    years.push(year);
+                    
         
                     var seriesKeys = Object.keys(data[0]).filter(function(key) {
                         return key !== 'ending on' && key !== 'week';
@@ -111,11 +113,11 @@
                     });
                     var seriesData = [
                         {
-                        key: seriesKeys[0]+' '+year,
+                        key: seriesKeys[0]+' '+years[0],
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+year,
+                        key: seriesKeys[1]+' '+years[0],
                         values: []
                         }
                     ];
