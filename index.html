@@ -97,11 +97,19 @@
             // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
 
+            function annee(date) {
+              var year;
+              if (date!== null) {
+                year=date.getFullYear();
+              }
+              return year;
+            }
+
             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
-                    var years=[]
-                    var year=2011;
+                    var years=[]; //years.length;
+                    var year=annee(data[0][1]);
                     years.push(year);
                     
         
@@ -111,6 +119,11 @@
                     var xValues = data.map(function(d) {
                         return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
                     });
+                    /*for (var i = 0; i < years.length; i++)
+                    {
+                      console.log(i);
+                    }*/
+                    
                     var seriesData = [
                         {
                         key: seriesKeys[0]+' '+years[0],
