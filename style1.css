@@ -1,44 +1,49 @@
-* {
-    background-color: #d1c373;
-    align-content:  center;
-  }
-
-#bandeau{
-	background-color: #1877f2;
+:not(div) {
+  background-color: #e6e4d8;
+  align-content: center;
+  font-family: math;
 }
 
-h1{
-  color:#999999;
-    margin-left: 2em;
-    margin-right: 2em;
-    margin-top: 0em;
-    margin-bottom: 0em;
-    text-align: center;
+h1 {
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  text-align: center;
+  font-family: cursive;
+  font-size: 1cm;
 }
 
-  div{
-    margin: 2em;
-    align-content:center;
-    -ms-flex-align: end;
-    padding: 3em;
-  }
+.Sec1 {
+  background-color: #e6e4d8;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 2em;
+  margin: 2em;
+  background-image: url("k.png");
+}
 
-  div.largeur{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
+.Sec2 {
+  background-color: transparent;
+  margin: -1em;
+  padding: 1em;
+  display: inline;
+  flex-direction: column;
+}
 
-  img{
-    height: 8em;
-    width: 8em;
-  }
+.Sec3 {
+  align-items: flex-start;
+  height: 10em;
+  width: 10em;
+  margin: -1em;
+}
 
-  select{
-    border-radius: 20px;
-  }
+.Sec3:first-child {
+  align-items: baseline;
+}
 
-  label{
-    padding-bottom: 1.75em;
-  }
+#chart{
+  height: 50em;
+}
