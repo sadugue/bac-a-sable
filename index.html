@@ -1,15 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Graphique NVD3 depuis un CSV</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css">
-</head>
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+    <meta charset="UTF-8">
+    <title>Tente Graph</title>
+    <link href="style1.css" rel="stylesheet" />
+    <script src="d3.js"></script>
+    <link href="nv.d3.min.css" rel="stylesheet">
+    <script src="nv.d3.min.js"></script>
+
 <body>
-<h1>tente GRaph</h1>
-  <div id="chart"></div>
+    <div class="Sec1">
+        <h1>Tente Graph</h1>
+    </div>
+    <div class="Sec1">
+        <div class="Sec2">
+            <form id="dateForm" onsubmit="event.preventDefault();">
+                <div class="Sec3">
+                    <div class="Ensemble">
+                        <label for="start">Date de début:</label>
+                        <input type="date" id="start" required name="trip-start" value="2023-05-15" min="2003-01-01"
+                            max="2023-05-15">
+                    </div>
+                </div>
+                <div class="Sec3">
+                    <div class="Ensemble">
+                        <label for="stop">Date de fin:</label>
+                        <input type="date" id="stop" required name="trip-stop" value="2023-05-15" min="2003-01-01"
+                            max="2023-05-15">
+                    </div>
+                </div>
+                <div class="Sec3">
+                    <div class="Ensemble">
+                        <button type="submit">Afficher</button>
+                        <div id="errorMessage" style="color: silver; font-weight: bold;">
+                            <p id="error"></p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="Sec2">
+            <div class="Sec3">
+                <div class="Ensemble">
+                    <label id="Produit">Produits :</label>
+                    <select name="Choix1" id="Ch1" onchange="selectCSVFile()">
+                        <option value="">--Tous les produits--</option>
+                        <option class="Produit" value="Bananes">Bananes</option>
+                        <option class="Produit" value="Pommes">Pommes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="Sec3">
+                <div class="Ensemble">
+                    <label id="Achats/Ventes">Achats/Ventes :</label>
+                    <select name="Choix2" id="Ch2">
+                        <option value="">--Achat et Vente--</option>
+                        <option class="Achats/Ventes" value="Achats">Achats</option>
+                        <option class="Achats/Ventes" value="Ventes">Ventes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="Sec3">
+                <div class="Ensemble">
+                    <label id="Regions">Régions :</label>
+                    <select name="Choix3" id="Ch3">
+                        <option value="">--Toutes--</option>
+                        <option class="Regions" value="Europe">Europe</option>
+                        <option class="Regions" value="Afrique">Afrique</option>
+                        <option class="Regions" value="Amerique Latine">Amerique Latine</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="Sec2">
+            <div class="Sec3">
+                <div class="Ensemble">
+                    <label id="Graphiques">Graphiques :</label>
+                    <select name="Choix4" id="Ch4">
+                        <option value="">--Sélection--</option>
+                        <option class="Graphiques" value="Graphiques1">Graphiques1</option>
+                        <option class="Graphiques" value="Graphiques2">Graphiques2</option>
+                        <option class="Graphiques" value="Graphiques3">Graphiques3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="Sec3">
+                <div class="Ensemble">
+                    <label id="Satisfaction">Satisfaction client pour ce prix :</label>
+                    <input type="range" id="slider" min="1" max="10" value="5">
+                    <span id="sliderValue">5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Sec1" id="chart">
+        <svg></svg>
+    </div>
 
   <script>
     // Votre code JavaScript ici
@@ -51,6 +138,143 @@
     .datum(formattedData)
     .call(chart);
 });
+
+
+/*
+// Table de correspondance produits-fichiers CSV
+var csvFiles = {
+    "Bananes": "bananas-wholesale-prices_en.csv",
+    //"Oranges": "oranges-wholesale-prices_en.csv",
+    // Ajoutez d'autres produits et fichiers CSV si nécessaire
+  };
+  
+  function selectCSVFile() {
+      var selectedElement = document.getElementById("Ch1");
+      var selectedValue = selectedElement.value;
+      var csvFile = csvFiles[selectedValue];
+  
+      if (selectedValue === "") {
+          // Effacez le contenu du message de sélection du fichier CSV
+          selectedElement.textContent = "";
+          // Effacez le graphique existant
+          d3.select('#chart svg').html("");
+          return;
+      }
+  
+      if (csvFile) {
+          selectedElement.textContent = "Fichier CSV sélectionné : " + csvFile;
+          // Effectuez les opérations appropriées avec le fichier CSV sélectionné
+          // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
+          d3.csv(csvFile, function (data) {
+              var dateForm = document.getElementById("dateForm");
+              if (!dateForm) {
+                  resetSelection();
+                  return;
+              }
+  
+              dateForm.addEventListener("submit", function (event) {
+                  event.preventDefault();
+  
+                  var startDateInput = document.getElementById("start");
+                  var endDateInput = document.getElementById("stop");
+  
+                  if (!startDateInput || !endDateInput) {
+                      resetSelection();
+                      return;
+                  }
+  
+                  selectedStartDate = startDateInput.value;
+                  selectedEndDate = endDateInput.value;
+  
+                  if (!selectedStartDate || !selectedEndDate) {
+                      resetSelection();
+                      return;
+                  }
+  
+                  var startDate = new Date(selectedStartDate);
+                  var endDate = new Date(selectedEndDate);
+  
+                  if (isNaN(startDate) || isNaN(endDate)) {
+                      resetSelection();
+                      return;
+                  }
+  
+                  if (startDate > endDate) {
+                      displayErrorMessage("La date de début doit être inférieure à la date de fin");
+                      return;
+                  }
+  
+  
+                  var filteredData = data.filter(function (d) {
+                      var date = new Date(d['ending on']);
+                      return date >= startDate && date <= endDate;
+                  });
+  
+                  //var year = date.getFullYear();
+  
+                  nv.addGraph(function () {
+                      var chart = nv.models.lineChart();
+  
+                      var seriesKeys = Object.keys(data[0]).filter(function (key) {
+                          return key !== 'ending on' && key !== 'week';
+                      });
+  
+                      var xValues = data.map(function (d) {
+                          return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
+                      });
+  
+                      var seriesData = [
+                          {
+                              key: seriesKeys[0],
+                              values: []
+                          },
+                          {
+                              key: seriesKeys[1],
+                              values: []
+                          }
+                      ];
+  
+                      data.forEach(function (d) {
+                            var week = +d['week'];
+                            var value1 = +d[seriesKeys[0]];
+                            var value2 = +d[seriesKeys[1]];
+                            var index=0;
+                            seriesData[index].values.push({ x: week, y: value1 });
+                            seriesData[index+1].values.push({ x: week, y: value2 });
+                            seriesData[index].values.push({ x: week, y: (value1,index) });
+                            seriesData[index+1].values.push({ x: week, y: (value2,index) });
+                            if (week === 52) {
+                                index=index+2;
+                            }
+                        });
+  
+                      chart.xAxis
+                          .axisLabel('Semaines');
+  
+                      chart.yAxis
+                          .axisLabel('Prix au 100 kilos')
+                          .tickFormat(d3.format(',.1f'));
+  
+                      d3.select('#chart svg')
+                          .datum(seriesData)
+                          .transition().duration(500)
+                          .call(chart);
+  
+                      nv.utils.windowResize(function () {
+                          chart.update();
+                      });
+                      return chart;
+                  });
+              });
+          });
+      } else {
+          selectedElement.textContent = "Veuillez sélectionner un produit valide.";
+      }
+  }
+  
+
+
+*/
   </script>
 </body>
 </html>
