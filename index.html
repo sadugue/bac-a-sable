@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Graphique NVD3 depuis un CSV</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css">
+</head>
+<body>
+<h1>tente GRaph</h1>
+  <div id="chart"></div>
+
+  <script>
+    // Votre code JavaScript ici
+    d3.csv("bananas-wholesale-pricesen.csv", function(error, csvData) {
+  if (error) {
+    console.error("Erreur lors du chargement du fichier CSV : ", error);
+    return;
+  }
+  
+  // Extraire les noms de colonnes
+  var columns = Object.keys(csvData[0]);
+  
+  // Formater les données pour le graphique à barres horizontales
+  var formattedData = [];
+  
+  csvData.forEach(function(row) {
+    var dataItem = {
+      key: row[columns[0]], // Utiliser la première colonne comme clé
+      values: []
+    };
+    
+    // Parcourir les colonnes à partir de la deuxième colonne
+    for (var i = 1; i < columns.length; i++) {
+      var label = columns[i];
+      var value = +row[label]; // Convertir en nombre si nécessaire
+      
+      dataItem.values.push({ label: label, value: value });
+    }
+    
+    formattedData.push(dataItem);
+  });
+  
+  // Générer le graphique à barres horizontales
+  var chart = nv.models.multiBarHorizontalChart();
+  chart.x(function(d) { return d.label; });
+  chart.y(function(d) { return d.value; });
+  
+  d3.select("#chart")
+    .datum(formattedData)
+    .call(chart);
+});
+  </script>
+</body>
+</html>

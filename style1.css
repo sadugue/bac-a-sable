@@ -1,0 +1,44 @@
+* {
+    background-color: #d1c373;
+    align-content:  center;
+  }
+
+#bandeau{
+	background-color: #1877f2;
+}
+
+h1{
+  color:#999999;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    text-align: center;
+}
+
+  div{
+    margin: 2em;
+    align-content:center;
+    -ms-flex-align: end;
+    padding: 3em;
+  }
+
+  div.largeur{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  img{
+    height: 8em;
+    width: 8em;
+  }
+
+  select{
+    border-radius: 20px;
+  }
+
+  label{
+    padding-bottom: 1.75em;
+  }
