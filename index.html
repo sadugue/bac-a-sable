@@ -97,21 +97,33 @@
             // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
 
-            function annee(date) {
-              var year;
-              if (date!== null) {
-                year=date.getFullYear();
+              function getYear(dateString) {
+                var dateParts = dateString.split('-');
+                var year = dateParts[2];
+                var lastTwoDigits = year.slice(-2);
+                return lastTwoDigits;
               }
-              return year;
-            }
+
+
 
             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
-                    var years=[]; //years.length;
+                    /*var years=[]; //years.length;
                     var year=annee(Object.keys(data[0][1]));
-                    years.push(year);
-                    
+                    years.push(year);*/
+                    var years= [];
+                   /* var oldyears=0;
+                    var seriesyears=Object.keys(data[0]).filter(function(date) {
+                        return date === 'ending on';
+                    });
+                    forEach(date){
+                      year=annee(date);
+                      if(year!==oldyear){
+                        years.push(year);
+                      }
+                    }*/
+                    var year = getYear("05-01-14");
         
                     var seriesKeys = Object.keys(data[0]).filter(function(key) {
                         return key !== 'ending on' && key !== 'week';
@@ -126,11 +138,11 @@
                     
                     var seriesData = [
                         {
-                        key: seriesKeys[0]+' '+years[0],
+                        key: seriesKeys[0]+' '+year[0],
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+years[0],
+                        key: seriesKeys[1]+' '+year[0],
                         values: []
                         }
                     ];
