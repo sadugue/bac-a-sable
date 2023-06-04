@@ -99,179 +99,60 @@
     </div>
 
   <script>
-    /*
-    // Votre code JavaScript ici
-    d3.csv("bananas-wholesale-pricesen.csv", function(error, csvData) {
-  if (error) {
-    console.error("Erreur lors du chargement du fichier CSV : ", error);
-    return;
-  }
-  
-  // Extraire les noms de colonnes
-  var columns = Object.keys(csvData[0]);
-  
-  // Formater les données pour le graphique à barres horizontales
-  var formattedData = [];
-  
-  csvData.forEach(function(row) {
-    var dataItem = {
-      key: row[columns[0]], // Utiliser la première colonne comme clé
-      values: []
-    };
-    
-    // Parcourir les colonnes à partir de la deuxième colonne
-    for (var i = 1; i < columns.length; i++) {
-      var label = columns[i];
-      var value = +row[label]; // Convertir en nombre si nécessaire
-      
-      dataItem.values.push({ label: label, value: value });
-    }
-    
-    formattedData.push(dataItem);
-  });
-  
-  // Générer le graphique à barres horizontales
-  var chart = nv.models.multiBarHorizontalChart();
-  chart.x(function(d) { return d.label; });
-  chart.y(function(d) { return d.value; });
-  
-  d3.select("#chart")
-    .datum(formattedData)
-    .call(chart);
-});*/
+             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
 
-
-
-// Table de correspondance produits-fichiers CSV
-var csvFiles = {
-    "Bananes": "bananas-wholesale-prices_en.csv",
-    //"Oranges": "oranges-wholesale-prices_en.csv",
-    // Ajoutez d'autres produits et fichiers CSV si nécessaire
-  };
-  
-  function selectCSVFile() {
-      var selectedElement = document.getElementById("Ch1");
-      var selectedValue = selectedElement.value;
-      var csvFile = csvFiles[selectedValue];
-  
-      if (selectedValue === "") {
-          // Effacez le contenu du message de sélection du fichier CSV
-          selectedElement.textContent = "";
-          // Effacez le graphique existant
-          d3.select('#chart svg').html("");
-          return;
-      }
-  
-      if (csvFile) {
-          selectedElement.textContent = "Fichier CSV sélectionné : " + csvFile;
-          // Effectuez les opérations appropriées avec le fichier CSV sélectionné
-          // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
-          d3.csv(csvFile, function (data) {
-              var dateForm = document.getElementById("dateForm");
-              if (!dateForm) {
-                  resetSelection();
-                  return;
-              }
-  
-              dateForm.addEventListener("submit", function (event) {
-                  event.preventDefault();
-  
-                  var startDateInput = document.getElementById("start");
-                  var endDateInput = document.getElementById("stop");
-  
-                  if (!startDateInput || !endDateInput) {
-                      resetSelection();
-                      return;
-                  }
-  
-                  selectedStartDate = startDateInput.value;
-                  selectedEndDate = endDateInput.value;
-  
-                  if (!selectedStartDate || !selectedEndDate) {
-                      resetSelection();
-                      return;
-                  }
-  
-                  var startDate = new Date(selectedStartDate);
-                  var endDate = new Date(selectedEndDate);
-  
-                  if (isNaN(startDate) || isNaN(endDate)) {
-                      resetSelection();
-                      return;
-                  }
-  
-                  if (startDate > endDate) {
-                      displayErrorMessage("La date de début doit être inférieure à la date de fin");
-                      return;
-                  }
-  
-  
-                  var filteredData = data.filter(function (d) {
-                      var date = new Date(d['ending on']);
-                      return date >= startDate && date <= endDate;
-                  });
-  
-                  //var year = date.getFullYear();
-  
-                  nv.addGraph(function () {
-                      var chart = nv.models.lineChart();
-  
-                      var seriesKeys = Object.keys(data[0]).filter(function (key) {
-                          return key !== 'ending on' && key !== 'week';
-                      });
-  
-                      var xValues = data.map(function (d) {
-                          return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
-                      });
-  
-                      var seriesData = [
-                          {
-                              key: seriesKeys[0],
-                              values: []
-                          },
-                          {
-                              key: seriesKeys[1],
-                              values: []
-                          }
-                      ];
-  
-                      data.forEach(function (d) {
-                            var week = +d['week'];
-                            var value1 = +d[seriesKeys[0]];
-                            var value2 = +d[seriesKeys[1]];
-                            var index=0;
-                            seriesData[index].values.push({ x: week, y: value1 });
-                            seriesData[index+1].values.push({ x: week, y: value2 });
-                            seriesData[index].values.push({ x: week, y: (value1,index) });
-                            seriesData[index+1].values.push({ x: week, y: (value2,index) });
-                            if (week === 52) {
-                                index=index+2;
-                            }
-                        });
-  
-                      chart.xAxis
-                          .axisLabel('Semaines');
-  
-                      chart.yAxis
-                          .axisLabel('Prix au 100 kilos')
-                          .tickFormat(d3.format(',.1f'));
-  
-                      d3.select('#chart svg')
-                          .datum(seriesData)
-                          .transition().duration(500)
-                          .call(chart);
-  
-                      nv.utils.windowResize(function () {
-                          chart.update();
-                      });
-                      return chart;
-                  });
-              });
-          });
-      } else {
-          selectedElement.textContent = "Veuillez sélectionner un produit valide.";
-      }
-  }
+             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
+                nv.addGraph(function() {
+                    var chart = nv.models.lineChart();
+        
+                    var seriesKeys = Object.keys(data[0]).filter(function(key) {
+                        return key !== 'ending on' && key !== 'week';
+                    });
+                    var xValues = data.map(function(d) {
+                        return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
+                    });
+                    var seriesData = [
+                        {
+                        key: seriesKeys[0],
+                        values: []
+                        },
+                        {
+                        key: seriesKeys[1],
+                        values: []
+                        }
+                    ];
+                    var week52Reached = false;
+                    data.forEach(function(d) {
+                        var week = +d['week'];
+                        var value1 = +d[seriesKeys[0]];
+                        var value2 = +d[seriesKeys[1]];
+                    if (!week52Reached) {
+                        seriesData[0].values.push({ x: week, y: value1 });
+                        seriesData[1].values.push({ x: week, y: value2 });
+                        if (week === 52) {
+                            week52Reached = true;
+                        }
+                    }
+                    });
+                    
+                    chart.xAxis
+                        .axisLabel('Semaines');
+        
+                    chart.yAxis
+                        .axisLabel('Prix au 100 kilos')
+                        /*.tickFormat(d3.format(',.1f'));*/
+        
+                    d3.select('#chart svg')
+                        .datum(seriesData)
+                        .transition().duration(500)
+                        .call(chart);
+        
+                    nv.utils.windowResize(function() {
+                        chart.update();
+                    });
+                    return chart;
+                });
+            });
   
   </script>
 </body>
