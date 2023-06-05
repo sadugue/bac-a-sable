@@ -137,6 +137,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 
             function getYear(dateString) {
   if (typeof dateString === 'string') {
+    console.log(typeof dateString);
     var dateParts = dateString.split('-');
     var year = dateParts[2];
     var lastTwoDigits = year.slice(-2);
