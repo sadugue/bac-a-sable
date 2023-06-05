@@ -124,12 +124,11 @@
                     var chart = nv.models.lineChart();
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
                     const columnName = 'ending on';
-                    var years= [];
                     fetch(csvFilePath)
                       .then(response => response.text())
                       .then(csvData => {
                       getUniqueYears(csvData, columnName, (uniqueYears) => {
-                        console.log(uniqueYears);
+                        var eachyears=uniqueYears;
                       });
                     })
                     .catch(error => {
@@ -145,11 +144,11 @@
                     
                     var seriesData = [
                         {
-                        key: seriesKeys[0]+' '+years[0],
+                        key: seriesKeys[0]+' '+eachyears[0],
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+years[0],
+                        key: seriesKeys[1]+' '+eachyears[0],
                         values: []
                         }
                     ];
