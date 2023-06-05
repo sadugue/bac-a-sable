@@ -163,7 +163,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                     }
                     var week52Reached = false;
                     data.forEach(function(d) {
-                        var i=0;
+                        var s=0;
                         var week = +d['week'];
                         var value1 = +d[seriesKeys[0]];
                         var value2 = +d[seriesKeys[1]];
@@ -177,10 +177,11 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         week52Reached = false;
                     }*/
                     for (var i = 0; i < eachyears.length; i++){
-                        seriesData[0].values.push({ x: week, y: value1 });
+                        seriesData[i].values.push({ x: week, y: value1 });
+                        s=i;
                     }
-                    for (var i = 0; i < eachyears.length; i++){
-                        seriesData[1].values.push({ x: week, y: value2 });
+                    for (var i = s; i < eachyears.length; i++){
+                        seriesData[i].values.push({ x: week, y: value2 });
                     }
                     });
                     
