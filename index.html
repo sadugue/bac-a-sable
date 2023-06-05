@@ -96,15 +96,16 @@
         <script>
             // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
-            let eachyears=new Array();
+            let eachyears = new Array();
 
-            function getYear(dateString) {
-                var dateParts = dateString.split('-');
-                var year = dateParts[2];
-                var lastTwoDigits = year.slice(-2);
-                return lastTwoDigits;
-              }
-              function getUniqueYears(csvData, columnName, callback) {
+function getYear(dateString) {
+  var dateParts = dateString.split('-');
+  var year = dateParts[2];
+  var lastTwoDigits = year.slice(-2);
+  return lastTwoDigits;
+}
+
+function getUniqueYears(csvData, columnName, callback) {
   const years = new Set();
   const rows = csvData.split('\n');
   const headers = rows[0].split(',');
@@ -119,40 +120,39 @@
   }
   callback(Array.from(years));
 }
-            d3.csv("bananas-wholesale-prices_en.csv", function(data) {
-                nv.addGraph(function() {
-                    var chart = nv.models.lineChart();
-                    const csvFilePath = 'bananas-wholesale-prices_en.csv';
-                    const columnName = 'ending on';
-                    
-                    var y;
-                    fetch(csvFilePath)
-                        .then(response => response.text())
-                        .then(csvData => {
-                        return new Promise((resolve, reject) => {
-                            getUniqueYears(csvData, columnName, (uniqueYears) => {
-                                for (var i = 0; i < uniqueYears.length; i++) {
-                                    y = uniqueYears[i];
-                                    eachyears[i] = y;
-                                }
-                                resolve(eachyears);
-                                });
-                            });
-                        })
-                        .then((eachyears) => {
-                            console.log(eachyears[0]);
-                            console.log(eachyears[1]);
-                            console.log(eachyears[2]);
-                       })
-                        .catch(error => {
-                        console.error('Erreur lors du chargement du fichier CSV :', error);
-                    });
 
-                    console.log(eachyears[0]);
-                    console.log(eachyears[1]);
-                    console.log(eachyears[2]);
-        
-                    var seriesKeys = Object.keys(data[0]).filter(function(key) {
+d3.csv("bananas-wholesale-prices_en.csv", function(data) {
+  nv.addGraph(function() {
+    var chart = nv.models.lineChart();
+    const csvFilePath = 'bananas-wholesale-prices_en.csv';
+    const columnName = 'ending on';
+
+    fetch(csvFilePath)
+      .then(response => response.text())
+      .then(csvData => {
+        getUniqueYears(csvData, columnName, (uniqueYears) => {
+          for (var i = 0; i < uniqueYears.length; i++) {
+            eachyears[i] = uniqueYears[i];
+          }
+          
+          // Code dépendant de eachyears
+          console.log(eachyears[0]);
+          console.log(eachyears[1]);
+          console.log(eachyears[2]);
+
+          // Utilisez ici les valeurs de eachyears pour la création du graphique, etc.
+          var seriesData = [
+            {
+              key: 'FR ' + eachyears[0] + ' ',
+              values: []
+            },
+            {
+              key: 'PT ' + eachyears[0] + ' ',
+              values: []
+            }
+          ];
+
+          var seriesKeys = Object.keys(data[0]).filter(function(key) {
                         return key !== 'ending on' && key !== 'week';
                     });
                     var xValues = data.map(function(d) {
@@ -187,8 +187,7 @@
                         .axisLabel('Semaines');
         
                     chart.yAxis
-                        .axisLabel('Prix au 100 kilos')
-                        /*.tickFormat(d3.format(',.1f'));*/
+                        .axisLabel('Prix au 100 kilos');
         
                     d3.select('#chart svg')
                         .datum(seriesData)
@@ -200,7 +199,13 @@
                     });
                     return chart;
                 });
-            });
+
+        });
+      })
+      .catch(error => {
+        console.error('Erreur lors du chargement du fichier CSV :', error);
+      });
+  });
         </script>
         
     </body>
