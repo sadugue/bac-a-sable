@@ -177,6 +177,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                                 r++;
                             }while (r<=53 && r!==1);
                             seriesData.push(new Data(new Key(eachyears[i],seriesKeys[j]),b));
+                            r=0;
                         }
                     }
                     /*var week52Reached = false;
