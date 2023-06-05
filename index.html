@@ -105,6 +105,20 @@ function getYear(dateString) {
   return lastTwoDigits;
 }
 
+function getMonth(dateString) {
+  var dateParts = dateString.split('-');
+  var year = dateParts[1];
+  var lastTwoDigits = year.slice(-2);
+  return lastTwoDigits;
+}
+
+function getDay(dateString) {
+  var dateParts = dateString.split('-');
+  var year = dateParts[0];
+  var lastTwoDigits = year.slice(-2);
+  return lastTwoDigits;
+}
+
 function getUniqueYears(csvData, columnName, callback) {
   const years = new Set();
   const rows = csvData.split('\n');
@@ -164,7 +178,8 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         var i=0;
                         var week = +d['week'];
                         var endingon = +d['ending on'];
-                        console.log(endingon);
+                        var y=getYear(endingon);
+                        console.log(y);
                         var value1 = +d[seriesKeys[0]];
                         var value2 = +d[seriesKeys[1]];
                     if (!week52Reached) {
