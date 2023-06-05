@@ -104,23 +104,18 @@
                 return lastTwoDigits;
               }
 
-
-              const fs = require('fs');
-              const csv = require('csv-parser');
-
-              function getUniqueYears(csvFilePath, columnName, callback) {
+              function getUniqueYears(csvData, columnName, callback) {
                 const years = new Set();
-
-                fs.createReadStream(csvFilePath)
-                  .pipe(csv())
-                  .on('data', (data) => {
-                    const dateString = data[columnName];
-                    const year = dateString.slice(-2);
-                    years.add(year);
-                    })
-                  .on('end', () => {
-                  callback(Array.from(years));
-                });
+                const rows = csvData.split('\n');
+                const headers = rows[0].split(',');
+                const columnIndex = headers.indexOf(columnName);
+                for (let i = 1; i < rows.length; i++) {
+                  const rowData = rows[i].split(',');
+                  const dateString = rowData[columnIndex];
+                  const year = dateString.slice(-2);
+                  years.add(year);
+                }
+                callback(Array.from(years));
               }
 
 
@@ -131,8 +126,15 @@
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
                     const columnName = 'ending on';
                     var years= [];
-                    getUniqueYears(csvFilePath, columnName, (uniqueYears) => {
-                      years.push(uniqueYears);
+                    fetch(csvFilePath)
+                      .then(response => response.text())
+                      .then(csvData => {
+                      getUniqueYears(csvData, columnName, (uniqueYears) => {
+                        years.push(uniqueYears);
+                      });
+                    })
+                    .catch(error => {
+                      console.error('Erreur lors du chargement du fichier CSV :', error);
                     });
                     
         
