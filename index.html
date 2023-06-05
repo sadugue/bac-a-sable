@@ -138,6 +138,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 
             function Key(year,seriesKeys){
                 this.key=seriesKeys + ' ' + year;
+                console.log(this.key);
             }
 
             function Data(key, values) {
