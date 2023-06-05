@@ -177,7 +177,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                                 b=new Base(xValues[r],seriesKeys[j]);
                                 r++;
                                 passe=true;
-                            }while (r<=53 && (r!==1||passe));
+                            }while (r<=53 && (r>1||!passe));
                             r=0;
                             k=new Key(eachyears[i],seriesKeys[j]);
                             passe=false;
