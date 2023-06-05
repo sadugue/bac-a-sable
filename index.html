@@ -140,47 +140,35 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
           console.log(eachyears[1]);
           console.log(eachyears[2]);
 
-          // Utilisez ici les valeurs de eachyears pour la création du graphique, etc.
-          var seriesData = [
-            {
-              key: 'FR ' + eachyears[0] + ' ',
-              values: []
-            },
-            {
-              key: 'PT ' + eachyears[0] + ' ',
-              values: []
+            function Data(key, values) {
+                this.key = key;
+                this.values = values;
             }
-          ];
 
-          var seriesKeys = Object.keys(data[0]).filter(function(key) {
-                        return key !== 'ending on' && key !== 'week';
-                    });
-                    var xValues = data.map(function(d) {
-                        return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
-                    });
+            var seriesKeys = Object.keys(data[0]).filter(function(key) {
+                return key !== 'ending on' && key !== 'week';
+            });
+            var xValues = data.map(function(d) {
+                return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
+            });
                     
-                    /*var seriesData = [
+                    var seriesData = [
                         {
                         key: seriesKeys[0]+' '+eachyears[0]+' ',
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+eachyears[0]+' ',
+                        key: seriesKeys[1]+' '+eachyears[1]+' ',
                         values: []
                         }
-                    ];*/
+                    ];
 
-                    function Data(key, values) {
-                        this.key = key;
-                        this.values = values;
-                    }
-
-                    var seriesData=[];
+                    /*var seriesData=[];
                         for( var i=0;i<seriesKeys.length;i++){
                             for( var j=0;j<eachyears.length;j++){
                                 seriesData.push(Data(seriesKeys[i]+' '+eachyears[j], []));
                             }
-                        }
+                        }*/
                     var week52Reached = false;
                     data.forEach(function(d) {
                         var week = +d['week'];
