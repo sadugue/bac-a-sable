@@ -133,8 +133,12 @@
                         console.log(' ');
                         console.log(eachyears);
                         console.log(' ');
-                        eachyears=uniqueYears;
+                        uniqueYears.forEach(function(value) {
+                          eachyears.push(value);
+                        });
                         console.log(eachyears);
+                        console.log(' ');
+                      });
                       });
                     })
                     .catch(error => {
@@ -150,11 +154,11 @@
                     
                     var seriesData = [
                         {
-                        key: seriesKeys[0]+' '+eachyears[1][0]+eachyears[1][1],
+                        key: seriesKeys[0]+' '+eachyears[1],
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+eachyears[0][0]+eachyears[1][1],
+                        key: seriesKeys[1]+' '+eachyears[0],
                         values: []
                         }
                     ];
