@@ -150,30 +150,34 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             });
                     
             var seriesData = [];
-                    for (var i = 0; i < eachyears.length; i++) {
+                    /*for (var i = 0; i < eachyears.length; i++) {
                         for (var j = 0; j < seriesKeys.length; j++) {
                             seriesData.push({
                                 key: seriesKeys[j] + ' ' + eachyears[i],
                                 values: []
                             });
                         }
-                    }
+                    }*/
                     var week52Reached = false;
                     data.forEach(function(d) {
                         var week = +d['week'];
-                        var value1 = +d[seriesKeys[0]];
-                        var value2 = +d[seriesKeys[1]];
-                    if (!week52Reached) {
+                        /*var value1 = +d[seriesKeys[0]];
+                        var value2 = +d[seriesKeys[1]];*/
+                        for (var i = 0; i < eachyears.length; i++) {
+                            for (var j = 0; j < seriesKeys.length; j++) {
+                                seriesData.push({
+                                    key: seriesKeys[j] + ' ' + eachyears[i],
+                                    values: [{ x: week, y: seriesKeys[j] }]
+                                });
+                            }
+                        }
+                    /*if (!week52Reached) {
                         seriesData[0].values.push({ x: week, y: value1 });
-                        //console.log(seriesData[0].values.push({ x: week, y: value1 }));
-                        //console.log({ x: week, y: value1 });
                         seriesData[1].values.push({ x: week, y: value2 });
-                        //console.log(seriesData[1].values.push({ x: week, y: value2 }));
-                        //console.log({ x: week, y: value2 });
                         if (week === 52) {
                             week52Reached = true;
                         }
-                    }
+                    }*/
                     });
                     
                     chart.xAxis
