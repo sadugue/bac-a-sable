@@ -177,7 +177,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 
                     var seriesData=[];
                         for( var i=0;i<seriesKeys.length;i++){
-                            for( var j=0;j<seriesKeys.length;j++){
+                            for( var j=0;j<eachyears.length;j++){
                                 seriesData.push(Data(seriesKeys[i]+' '+eachyears[j], []));
                             }
                         }
