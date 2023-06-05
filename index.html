@@ -190,7 +190,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 for (var i = 0; i < eachyears.length; i++) {
   for (var j = 0; j < seriesKeys.length; j++) {
     var countryData = data.filter(function(d) {
-        console.log(getYear(d['ending on']));
+        console.log(getYear(d['ending on']) === eachyears[i] );
       return getYear(d['ending on']) === eachyears[i] && d[seriesKeys[j]] === seriesKeys[j];
     });
     seriesData.push({
