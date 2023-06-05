@@ -97,38 +97,44 @@
             // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
 
-              function getYear(dateString) {
+
+            function getYear(dateString) {
                 var dateParts = dateString.split('-');
                 var year = dateParts[2];
                 var lastTwoDigits = year.slice(-2);
                 return lastTwoDigits;
               }
-
-              const fs = require('fs');
-const csv = require('csv-parser');
-
-function getFirstDate(csvFilePath, columnName, callback) {
-  fs.createReadStream(csvFilePath)
-    .pipe(csv())
-    .on('data', (data) => {
-      const dateString = data[columnName];
-      callback(dateString);
-      // Si vous souhaitez récupérer uniquement la première date, vous pouvez arrêter la lecture ici
-      // en utilisant la méthode .destroy() pour fermer le flux CSV
-      this.destroy();
-    });
+              function getUniqueYears(csvData, columnName, callback) {
+  const years = new Set();
+  const rows = csvData.split('\n');
+  const headers = rows[0].split(',');
+  const columnIndex = headers.indexOf(columnName);
+  for (let i = 1; i < rows.length; i++) {
+    const rowData = rows[i].split(',');
+    const dateString = rowData[columnIndex];
+    if (dateString) {
+      const year = dateString.slice(-2);
+      years.add(year);
+    }
+  }
+  callback(Array.from(years));
 }
-
             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
                     const columnName = 'ending on';
                     var years= [];
-                    getFirstDate(csvFilePath, columnName, (firstDate) => {
-                      years.push(getYear(firstDate));
+                    fetch(csvFilePath)
+                      .then(response => response.text())
+                      .then(csvData => {
+                      getUniqueYears(csvData, columnName, (uniqueYears) => {
+                        years.push(uniqueYears);
+                      });
+                    })
+                    .catch(error => {
+                      console.error('Erreur lors du chargement du fichier CSV :', error);
                     });
-                    
         
                     var seriesKeys = Object.keys(data[0]).filter(function(key) {
                         return key !== 'ending on' && key !== 'week';
