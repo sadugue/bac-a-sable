@@ -167,7 +167,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         var week = +d['week'];
                         var value1 = +d[seriesKeys[0]];
                         var value2 = +d[seriesKeys[1]];
-                    if (!week52Reached) {
+                    /*if (!week52Reached) {
                         seriesData[i].values.push({ x: week, y: value1 });
                         seriesData[i+1].values.push({ x: week, y: value2 });
                         if (week === 52) {
@@ -175,6 +175,12 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                             i=i*2;
                         }
                         week52Reached = false;
+                    }*/
+                    for (var i = 0; i < eachyears.length; i++){
+                        seriesData[0].values.push({ x: week, y: value1 });
+                    }
+                    for (var i = 0; i < eachyears.length; i++){
+                        seriesData[1].values.push({ x: week, y: value2 });
                     }
                     });
                     
