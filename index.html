@@ -135,13 +135,24 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             eachyears[i] = uniqueYears[i];
           }
 
-            /*function Data(key, values) {
+
+            function Key(year,seriesKeys){
+                this.key=seriesKeys + ' ' + year;
+            }
+
+            function Data(key, values) {
                 this.key = key;
                 this.values = values;
-            }*/
+            }
 
-            function Base(week){
+            function Base(week,value){
                 this.week= week;
+                this.value=value;
+            }
+
+            /*function Suite(week,value){
+
+
             }
 
             var seriesKeys = Object.keys(data[0]).filter(function(key) {
@@ -154,13 +165,10 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             var seriesData = [];
                     for (var i = 0; i < eachyears.length; i++) {
                         for (var j = 1; j < seriesKeys.length; j++) {
-                            seriesData.push({
-                                key: seriesKeys[j] + ' ' + eachyears[i],
-                                values: []
-                            });
+                            seriesData.push(new Data(new Key(eachyears[i],seriesKeys[j]),[]));
                         }
                     }
-                    var week52Reached = false;
+                    /*var week52Reached = false;
                     var dateprec;
                     var yearprec;
                     var anneefinie=false;
@@ -174,8 +182,8 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         var value2 = +d[seriesKeys[2]];
                         console.log(year1);
                     if (dateprec!==date1) {
-                            /*seriesData[0].values.push({ x: week, y: value1 });
-                            seriesData[1].values.push({ x: week, y: value2 });*/
+                            seriesData[0].values.push({ x: week, y: value1 });
+                            seriesData[1].values.push({ x: week, y: value2 });
                         if (yearprec === year1) {
                             seriesData[0].values.push({ x: week, y: value1 });
                             seriesData[1].values.push({ x: week, y: value2 });
@@ -183,15 +191,15 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         dateprec=date1;
                         yearprec = year1;
                     }
-                    /*for (var i = 0; i < eachyears.length; i++){
+                    for (var i = 0; i < eachyears.length; i++){
                         var a=1;
                         if (a<52){
                             seriesData[0].values.push({ x: week, y: value1 });
                             seriesData[1].values.push({ x: week, y: value2 });
                         }
                         a++;
-                    }*/
-                    });
+                    }
+                    });*/
                     
                     chart.xAxis
                         .axisLabel('Semaines');
