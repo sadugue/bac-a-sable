@@ -98,6 +98,39 @@
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
             let eachyears = new Array();
 
+            function getYear(dateString) {
+                dateString=dateString.toString();
+  if (typeof dateString === 'string') {
+    
+    var dateParts = dateString.split('-');
+    var year = dateParts[2];
+    var lastTwoDigits = year.slice(-2);
+    return lastTwoDigits;
+  }
+  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
+}
+
+function getMonth(dateString) {
+    dateString=dateString.toString();
+  if (typeof dateString === 'string') {
+    var dateParts = dateString.split('-');
+    var year = dateParts[1];
+    var lastTwoDigits = year.slice(-2);
+    return lastTwoDigits;
+  }
+  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
+}
+
+function getDay(dateString) {
+    dateString=dateString.toString();
+  if (typeof dateString === 'string') {
+    var dateParts = dateString.split('-');
+    var year = dateParts[0];
+    var lastTwoDigits = year.slice(-2);
+    return lastTwoDigits;
+  }
+  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
+}
 
 function getUniqueYears(csvData, columnName, callback) {
   const years = new Set();
@@ -134,40 +167,6 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 this.key = key;
                 this.values = values;
             }
-
-            function getYear(dateString) {
-                dateString=dateString.toString();
-  if (typeof dateString === 'string') {
-    
-    var dateParts = dateString.split('-');
-    var year = dateParts[2];
-    var lastTwoDigits = year.slice(-2);
-    return lastTwoDigits;
-  }
-  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
-}
-
-function getMonth(dateString) {
-    dateString=dateString.toString();
-  if (typeof dateString === 'string') {
-    var dateParts = dateString.split('-');
-    var year = dateParts[1];
-    var lastTwoDigits = year.slice(-2);
-    return lastTwoDigits;
-  }
-  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
-}
-
-function getDay(dateString) {
-    dateString=dateString.toString();
-  if (typeof dateString === 'string') {
-    var dateParts = dateString.split('-');
-    var year = dateParts[0];
-    var lastTwoDigits = year.slice(-2);
-    return lastTwoDigits;
-  }
-  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
-}
 
             var seriesKeys = Object.keys(data[0]).filter(function(key) {
                 return key !== 'ending on' && key !== 'week';
