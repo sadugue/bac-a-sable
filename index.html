@@ -130,7 +130,7 @@
                       .then(csvData => {
                       getUniqueYears(csvData, columnName, (uniqueYears) => {
                         uniqueYears.forEach(function(value) {
-                          eachyears.push(value);
+                          eachyears.concat(value);
                         })
 
                     console.log(eachyears[0]);
