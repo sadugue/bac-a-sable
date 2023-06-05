@@ -135,6 +135,9 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             eachyears[i] = uniqueYears[i];
           }
 
+          var seriesKeys = Object.keys(data[0]).filter(function(key) {
+                return key;
+            });
 
             function Key(year,seriesKeys){
                 this.key=seriesKeys + ' ' + year;
@@ -161,9 +164,6 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 
             }*/
 
-            var seriesKeys = Object.keys(data[0]).filter(function(key) {
-                return key;
-            });
             var xValues = data.map(function(d) {
                 return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
             });
@@ -171,7 +171,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             var seriesData = [];
                     for (var i = 0; i < eachyears.length; i++) {
                         for (var j = 2; j < seriesKeys.length; j++) {
-                            seriesData.push(new Data(new Key(eachyears[i],seriesKeys[j]),new Base(+seriesKeys[0],seriesKeys[j])));
+                            seriesData.push(new Data(new Key(eachyears[i],seriesKeys[j]),new Base(seriesKeys[0],seriesKeys[j])));
                         }
                     }
                     /*var week52Reached = false;
