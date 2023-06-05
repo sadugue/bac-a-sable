@@ -137,6 +137,10 @@
                     .catch(error => {
                       console.error('Erreur lors du chargement du fichier CSV :', error);
                     });
+
+                    console.log(eachyears[0]);
+                    console.log(eachyears[1]);
+                    console.log(eachyears[2]);
         
                     var seriesKeys = Object.keys(data[0]).filter(function(key) {
                         return key !== 'ending on' && key !== 'week';
