@@ -125,12 +125,14 @@
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
                     const columnName = 'ending on';
                     var eachyears=new Array();
+                    var y;
                     fetch(csvFilePath)
                       .then(response => response.text())
                       .then(csvData => {
                       getUniqueYears(csvData, columnName, (uniqueYears) => {
                         for (var i = 0; i < uniqueYears.length; i++){
-                          eachyears[i] = uniqueYears[i];
+                          y = uniqueYears[i];
+                          eachyears[i]=y;
                         }
                     console.log(eachyears[0]);
                     console.log(eachyears[1]);
