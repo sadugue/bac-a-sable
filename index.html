@@ -133,7 +133,7 @@
                         console.log(' ');
                         console.log(eachyears);
                         console.log(' ');
-                        eachyears.push(uniqueYears);
+                        eachyears=uniqueYears;
                         console.log(eachyears);
                       });
                     })
@@ -150,11 +150,11 @@
                     
                     var seriesData = [
                         {
-                        key: seriesKeys[0]+' '+eachyears[1],
+                        key: seriesKeys[0]+' '+eachyears[1][0]+eachyears[1][1],
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+eachyears[2],
+                        key: seriesKeys[1]+' '+eachyears[0][0]+eachyears[1][1],
                         values: []
                         }
                     ];
