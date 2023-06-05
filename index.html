@@ -143,7 +143,9 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 
             function Data(key, values) {
                 this.key = key;
+                console.log(this.key);
                 this.values = values;
+                console.log(this.values);
             }
 
             function Base(week,value,suite){
