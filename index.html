@@ -141,7 +141,7 @@ function getUniqueYears(csvData, columnName, callback) {
     const rowData = rows[i].split(',');
     const dateString = rowData[columnIndex];
     if (dateString) {
-      const year = dateString.slice(-2);
+      const year = getYear(dateString);
       years.add(year);
     }
   }
