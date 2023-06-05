@@ -176,10 +176,12 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                                 b=new Base(xValues[r],seriesKeys[j]);
                                 r++;
                             }while (r<=53 && r!==1);
-                            seriesData.push(new Data(new Key(eachyears[i],seriesKeys[j]),b));
                             r=0;
+                            k=new Key(eachyears[i],seriesKeys[j]);
                         }
+                        d=new Data(k,b);
                     }
+                    seriesData.push(d);
                     /*var week52Reached = false;
                     var dateprec;
                     var yearprec;
