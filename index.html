@@ -105,26 +105,36 @@
               }
 
 
+              const fs = require('fs');
+              const csv = require('csv-parser');
+
+              function getUniqueYears(csvFilePath, columnName, callback) {
+                const years = new Set();
+
+                fs.createReadStream(csvFilePath)
+                  .pipe(csv())
+                  .on('data', (data) => {
+                    const dateString = data[columnName];
+                    const year = dateString.slice(-2);
+                    years.add(year);
+                    })
+                  .on('end', () => {
+                  callback(Array.from(years));
+                });
+              }
+
+
 
             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
-                    /*var years=[]; //years.length;
-                    var year=annee(Object.keys(data[0][1]));
-                    years.push(year);*/
+                    const csvFilePath = 'bananas-wholesale-prices_en.csv';
+                    const columnName = 'ending on';
                     var years= [];
-                   /* var oldyears=0;
-                    var seriesyears=Object.keys(data[0]).filter(function(date) {
-                        return date === 'ending on';
+                    getUniqueYears(csvFilePath, columnName, (uniqueYears) => {
+                      years.push(uniqueYears);
                     });
-                    forEach(date){
-                      year=annee(date);
-                      if(year!==oldyear){
-                        years.push(year);
-                      }
-                    }*/
-                    var year = getYear("05-01-14");
-                    years.push(year);
+                    
         
                     var seriesKeys = Object.keys(data[0]).filter(function(key) {
                         return key !== 'ending on' && key !== 'week';
@@ -132,10 +142,6 @@
                     var xValues = data.map(function(d) {
                         return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
                     });
-                    /*for (var i = 0; i < years.length; i++)
-                    {
-                      console.log(i);
-                    }*/
                     
                     var seriesData = [
                         {
