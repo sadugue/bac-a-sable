@@ -134,80 +134,53 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
           for (var i = 0; i < uniqueYears.length; i++) {
             eachyears[i] = uniqueYears[i];
           }
-
-          var seriesKeys = Object.keys(data[0]).filter(function(key) {
-                return key!=='week';
-            });
-
-            function Key(year,seriesKeys){
-                this.key=seriesKeys + ' ' + year;
-                console.log(this.key);
-            }
+          
+          // Code dépendant de eachyears
+          console.log(eachyears[0]);
+          console.log(eachyears[1]);
+          console.log(eachyears[2]);
 
             function Data(key, values) {
                 this.key = key;
-                console.log(this.key);
                 this.values = values;
-                console.log(this.values);
             }
 
-            function Base(week,value){
-                this.x= week;
-                this.y=value;
-            }
-
+            var seriesKeys = Object.keys(data[0]).filter(function(key) {
+                return key !== 'ending on' && key !== 'week';
+            });
             var xValues = data.map(function(d) {
                 return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
             });
                     
-            var seriesData = new Array(seriesKeys.length);
-            /*var r = 0;
-            var passe = false;
-            for (var i = 0; i < eachyears.length; i++) {
-                for (var j = 2; j < seriesKeys.length; j++) {
-                    do {
-                        b = new Base(xValues[r], seriesKeys[j]);
-                        r++;
-                        passe = true;
-                    } while (r <= 53 && (r > 1 || !passe));
-                    r = 0;
-                    k = new Key(eachyears[i], seriesKeys[j]);
-                    passe = false;
-                    d = new Data(k, b);
-                    seriesData[j] = seriesData[j] || [];
-                    seriesData[j].push(d);
-                }
-            }*/
-                    var week52Reached = false;
-                    var dateprec;
-                    var yearprec;
-                    var anneefinie=false;
-
-                    data.forEach(function(d) {
-                        var i=0;
-                        var week = +d['week'];
-                        var date1 = d[seriesKeys[0]];
-                        var year1 = date1.slice(-2);
-                        var value1 = +d[seriesKeys[1]];
-                        var value2 = +d[seriesKeys[2]];
-                        console.log(year1);
-                    if (dateprec!==date1) {
-                            seriesData[0].values.push({ x: week, y: value1 });
-                            seriesData[1].values.push({ x: week, y: value2 });
-                        if (yearprec === year1) {
-                            seriesData[0].values.push({ x: week, y: value1 });
-                            seriesData[1].values.push({ x: week, y: value2 });
+            var seriesData = [];
+                    for (var i = 0; i < eachyears.length; i++) {
+                        for (var j = 0; j < seriesKeys.length; j++) {
+                            seriesData.push({
+                                key: seriesKeys[j] + ' ' + eachyears[i],
+                                values: []
+                            });
                         }
-                        dateprec=date1;
-                        yearprec = year1;
                     }
-                    for (var i = 0; i < eachyears.length; i++){
-                        var a=1;
-                        if (a<52){
-                            seriesData[0].values.push({ x: week, y: value1 });
-                            seriesData[1].values.push({ x: week, y: value2 });
+                    var week52Reached = false;
+                    data.forEach(function(d) {
+                        var week = +d['week'];
+                        var value1 = +d[seriesKeys[0]];
+                        var value2 = +d[seriesKeys[1]];
+                    /*if (!week52Reached) {
+                        seriesData[i].values.push({ x: week, y: value1 });
+                        seriesData[i+1].values.push({ x: week, y: value2 });
+                        if (week === 52) {
+                            week52Reached = true;
                         }
-                        a++;
+                        week52Reached = false;
+                    }*/
+                    for (var i = 0; i < eachyears.length; i++){
+                        var i=1;
+                        while (i<52){
+                            seriesData[i*2].values.push({ x: week, y: value1 });
+                            seriesData[i*2+1].values.push({ x: week, y: value2 });
+                        i++;
+                        }
                     }
                     });
                     
