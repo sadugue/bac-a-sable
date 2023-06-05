@@ -129,19 +129,9 @@
                       .then(response => response.text())
                       .then(csvData => {
                       getUniqueYears(csvData, columnName, (uniqueYears) => {
-                        console.log(uniqueYears);
-                        console.log(' ');
-                        console.log(eachyears);
-                        console.log(' ');
                         uniqueYears.forEach(function(value) {
                           eachyears.push(value);
-                          console.log(value);
-                        });
-                        console.log(eachyears);
-                        console.log(' ');
-                        console.log(typeof (eachyears[0]));
-                        console.log(' ');
-                        console.log('14');
+                        })
                       });
                     })
                     .catch(error => {
@@ -157,11 +147,11 @@
                     
                     var seriesData = [
                         {
-                        key: seriesKeys[0]+' '+(eachyears[1]).toString(10),
+                        key: seriesKeys[0]+' '+eachyears[0]+' ',
                         values: []
                         },
                         {
-                        key: seriesKeys[1]+' '+(eachyears[0]).toString(10),
+                        key: seriesKeys[1]+' '+eachyears[0]+' ',
                         values: []
                         }
                     ];
