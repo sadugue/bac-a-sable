@@ -141,7 +141,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             }
 
             var seriesKeys = Object.keys(data[0]).filter(function(key) {
-                return key !== 'ending on' && key !== 'week';
+                return /*key !== 'ending on' && */key !== 'week';
             });
             var xValues = data.map(function(d) {
                 return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
@@ -149,7 +149,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                     
             var seriesData = [];
                     for (var i = 0; i < eachyears.length; i++) {
-                        for (var j = 0; j < seriesKeys.length; j++) {
+                        for (var j = 1; j < seriesKeys.length; j++) {
                             seriesData.push({
                                 key: seriesKeys[j] + ' ' + eachyears[i],
                                 values: []
@@ -159,8 +159,10 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                     var week52Reached = false;
                     data.forEach(function(d) {
                         var week = +d['week'];
-                        var value1 = +d[seriesKeys[0]];
-                        var value2 = +d[seriesKeys[1]];
+                        var value1 = +d[seriesKeys[1]];
+                        var value2 = +d[seriesKeys[2]];
+                        var date1 = +d[seriesKeys[0]]
+                        console.log(date1);
                     /*if (!week52Reached) {
                         seriesData[i].values.push({ x: week, y: value1 });
                         seriesData[i+1].values.push({ x: week, y: value2 });
@@ -172,10 +174,6 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                     for (var i = 0; i < eachyears.length; i++){
                         var a=1;
                         if (a<52){
-                            console.log(seriesData[0].values.push({ x: week, y: value1 }));
-                            console.log(seriesData[2].key);
-                            console.log(seriesData[1].values.push({ x: week, y: value2 }));
-                            console.log(seriesData[3].key);
                             seriesData[(i*2)+0].values.push({ x: week, y: value1 });
                             seriesData[(i*2)+1].values.push({ x: week, y: value2 });
                         a++;
