@@ -146,18 +146,17 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             var xValues = data.map(function(d) {
                 return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
             });
-            var yearprec;
+                    
             var seriesData = [];
                     for (var i = 0; i < eachyears.length; i++) {
                         for (var j = 1; j < seriesKeys.length; j++) {
                             seriesData.push({
                                 key: seriesKeys[j] + ' ' + eachyears[i],
-                                values: [{ x: week, y: seriesKeys[j] }]
+                                values: []
                             });
                         }
-                        yearprec=eachyears[i];
                     }
-                    /*var week52Reached = false;
+                    var week52Reached = false;
                     var dateprec;
                     var yearprec;
                     var anneefinie=false;
@@ -170,15 +169,15 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         var value2 = +d[seriesKeys[2]];
                         console.log(year1);
                     if (dateprec!==date1) {
-                            seriesData[0].values.push({ x: week, y: value1 });
-                            seriesData[1].values.push({ x: week, y: value2 });
+                            /*seriesData[0].values.push({ x: week, y: value1 });
+                            seriesData[1].values.push({ x: week, y: value2 });*/
                         if (yearprec === year1) {
                             seriesData[0].values.push({ x: week, y: value1 });
                             seriesData[1].values.push({ x: week, y: value2 });
                         }
                         dateprec=date1;
                         yearprec = year1;
-                    }*/
+                    }
                     /*for (var i = 0; i < eachyears.length; i++){
                         var a=1;
                         if (a<52){
@@ -186,8 +185,8 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                             seriesData[1].values.push({ x: week, y: value2 });
                         }
                         a++;
-                    }
-                    });*/
+                    }*/
+                    });
                     
                     chart.xAxis
                         .axisLabel('Semaines');
