@@ -161,7 +161,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                     var yearprec;
                     data.forEach(function(d) {
                         var i=0;
-                        var week = d['week'];
+                        var week = +d['week'];
                         var value1 = +d[seriesKeys[1]];
                         var value2 = +d[seriesKeys[2]];
                         var date1 = d[seriesKeys[0]];
