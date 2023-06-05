@@ -137,7 +137,6 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 
             function getYear(dateString) {
                 dateString=dateString.toString();
-                console.log(typeof dateString);
   if (typeof dateString === 'string') {
     
     var dateParts = dateString.split('-');
@@ -149,6 +148,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
 }
 
 function getMonth(dateString) {
+    dateString=dateString.toString();
   if (typeof dateString === 'string') {
     var dateParts = dateString.split('-');
     var year = dateParts[1];
@@ -159,6 +159,7 @@ function getMonth(dateString) {
 }
 
 function getDay(dateString) {
+    dateString=dateString.toString();
   if (typeof dateString === 'string') {
     var dateParts = dateString.split('-');
     var year = dateParts[0];
