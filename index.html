@@ -162,7 +162,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         var week = d['week']+1;
                         var value1 = d[seriesKeys[1]]+1;
                         var value2 = d[seriesKeys[2]]+1;
-                        var date1 = d[seriesKeys[0]]+1;
+                        var date1 = d[seriesKeys[0]];
                         var year1 = date1.slice(-2);
                         console.log(year1);
                     if (!week52Reached) {
