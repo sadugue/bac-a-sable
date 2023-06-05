@@ -105,19 +105,25 @@
               }
 
               function getUniqueYears(csvData, columnName, callback) {
-                const years = new Set();
-                const rows = csvData.split('\n');
-                const headers = rows[0].split(',');
-                const columnIndex = headers.indexOf(columnName);
-                for (let i = 1; i < rows.length; i++) {
-                  const rowData = rows[i].split(',');
-                  const dateString = rowData[columnIndex];
-                  const year = dateString.slice(-2);
-                  years.add(year);
-                }
-                callback(Array.from(years));
-              }
+  const years = new Set();
 
+  const rows = csvData.split('\n');
+  const headers = rows[0].split(',');
+
+  const columnIndex = headers.indexOf(columnName);
+
+  for (let i = 1; i < rows.length; i++) {
+    const rowData = rows[i].split(',');
+    const dateString = rowData[columnIndex];
+
+    if (dateString) {
+      const year = dateString.slice(-2);
+      years.add(year);
+    }
+  }
+
+  callback(Array.from(years));
+}
 
 
             d3.csv("bananas-wholesale-prices_en.csv", function(data) {
