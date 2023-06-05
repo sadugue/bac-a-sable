@@ -172,7 +172,7 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                 return key !== 'ending on' && key !== 'week';
             });
             var xValues = data.map(function(d) {
-                return +d['week']; // Utiliser les valeurs de la colonne 'week' comme axe des x
+                return +d['ending on']; // Utiliser les valeurs de la colonne 'week' comme axe des x
             });
                     
             var seriesData = [];
