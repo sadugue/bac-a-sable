@@ -164,8 +164,8 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
                         var value1 = +d[seriesKeys[0]];
                         var value2 = +d[seriesKeys[1]];
                     if (!week52Reached) {
-                        seriesData[i+0].values.push({ x: week, y: value1 });
-                        seriesData[i+1].values.push({ x: week, y: value2 });
+                        seriesData[i+0].values.push({ x: week, y: value1 , z: 1});
+                        seriesData[i+1].values.push({ x: week, y: value2 , z: 2});
                         if (week === 52) {
                             week52Reached = true;
                             i=i+2;
