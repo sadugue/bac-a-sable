@@ -96,7 +96,7 @@
         <script>
             // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
-
+            let eachyears=new Array();
 
             function getYear(dateString) {
                 var dateParts = dateString.split('-');
@@ -124,7 +124,7 @@
                     var chart = nv.models.lineChart();
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
                     const columnName = 'ending on';
-                    var eachyears=new Array();
+                    
                     var y;
                     fetch(csvFilePath)
                       .then(response => response.text())
@@ -132,7 +132,7 @@
                       getUniqueYears(csvData, columnName, (uniqueYears) => {
                         for (var i = 0; i < uniqueYears.length; i++){
                           y = uniqueYears[i];
-                          eachyears.concat(y);
+                          eachyears[i]=y;
                         }
                     console.log(eachyears[0]);
                     console.log(eachyears[1]);
