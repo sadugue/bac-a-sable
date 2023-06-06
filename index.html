@@ -31,6 +31,11 @@
                         min="2003-01-01" max="2023-05-15">
                     </div>
                 </div>
+                <div class="Sec3">
+                    <form action="" method="post">
+                        <input name="" type="submit" id="envoyer" class="submit" onclick=Clique() />
+                    </form>
+                </div>
             </div>
             <div class="Sec2">
                 <div class="Sec3">
@@ -70,7 +75,7 @@
                         <label id="Graphiques">Graphiques :</label>
                         <select name="Choix4" id="Ch4">
                             <option value="">--Sélection--</option>
-                            <option class="Graphiques"  value="Graphiques1">Graphiques1</option>
+                            <option class="Graphiques"  value="Graphiques1">En détail</option>
                             <option class="Graphiques"  value="Graphiques2">Graphiques2</option>
                             <option class="Graphiques"  value="Graphiques3">Graphiques3</option>
                         </select>
@@ -97,7 +102,11 @@
             // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
             // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
             let eachyears = new Array();
-
+            var graph='';
+            function clique(){
+                graph="Graphiques1";
+            }
+        if(document.getElementById("Graphiques").value==="Graphiques1"){
            function getYear(dateString) {
                 dateString=dateString.toString();
                 if (typeof dateString === 'string') {
@@ -202,9 +211,10 @@
 
             return chart;
         });
+    
     });
     })
-});
+});}
         </script>
         
     </body>
