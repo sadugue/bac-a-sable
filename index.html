@@ -1,110 +1,112 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
-    <meta charset="UTF-8">
-    <title>Suivis du prix des fruits et légumes</title>
-    <link href="style1.css" rel="stylesheet" />
-    <script src="dependances/d3.js"></script>
-    <link href="dependances/nv.d3.min.css" rel="stylesheet">
-    <script src="dependances/nv.d3.min.js"></script>
-
-    <!--<script src="dependances/fichecsv.js"></script>-->
-
+  <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+  <meta charset="UTF-8">
+  <link href="style1.css" rel="stylesheet"/>
+  <script src="dependances/d3.js"></script>
+  <link href="dependances/nv.d3.min.css" rel="stylesheet">
+  <script src="dependances/nv.d3.min.js"></script>
+  <title>Suivis du prix des fruits et légumes</title>
 </head>
-
 <body>
-    <div class="Sec1">
-        <h1>Suivis du prix des fruits et légumes</h1>
-    </div>
-    <div class="Sec1">
-        <div class="Sec2">
-            <form id="dateForm" onsubmit="event.preventDefault();">
-                <div class="Sec3">
-                    <div class="Ensemble">
-                        <label for="start">Date de début:</label>
-                        <input type="date" id="start" required name="trip-start" value="2023-05-15" min="2003-01-01"
-                            max="2023-05-15">
-                    </div>
-                </div>
-                <div class="Sec3">
-                    <div class="Ensemble">
-                        <label for="stop">Date de fin:</label>
-                        <input type="date" id="stop" required name="trip-stop" value="2023-05-15" min="2003-01-01"
-                            max="2023-05-15">
-                    </div>
-                </div>
-                <div class="Sec3">
-                    <div class="Ensemble">
-                        <button type="submit">Afficher</button>
-                        <div id="errorMessage" style="color: silver; font-weight: bold;">
-                            <p id="error"></p>
-                        </div>
-                    </div>
-                </div>
-            </form>
+  <div class="Sec1">
+    <h1>Suivis du prix des fruits et légumes</h1>
+  </div>
+  <div class="Sec1">
+    <div class="Sec2">
+      <div class="Sec3">
+        <div class="Ensemble">
+          <label for="start">Date de début:</label>
+          <input type="date" id="start" name="trip-start" value="2023-05-15" min="2003-01-01" max="2023-05-15">
         </div>
-        <div class="Sec2">
-            <div class="Sec3">
-                <div class="Ensemble">
-                    <label id="Produit">Produits :</label>
-                    <select name="Choix1" id="Ch1" onchange="change()">
-                        <option value="">--Tous les produits--</option>
-                        <option class="Produit" value="bananas-wholesale-prices_en.csv">Bananes</option>
-                        <option class="Produit" value="Pommes">Pommes</option>
-                    </select>
-                </div>
-            </div>
-            <div class="Sec3">
-                <div class="Ensemble">
-                    <label id="Achats/Ventes">Achats/Ventes :</label>
-                    <select name="Choix2" id="Ch2">
-                        <option value="">--Achat et Vente--</option>
-                        <option class="Achats/Ventes" value="Achats">Achats</option>
-                        <option class="Achats/Ventes" value="Ventes">Ventes</option>
-                    </select>
-                </div>
-            </div>
-            <div class="Sec3">
-                <div class="Ensemble">
-                    <label id="Regions">Régions :</label>
-                    <select name="Choix3" id="Ch3">
-                        <option value="">--Toutes--</option>
-                        <option class="Regions" value="Europe">Europe</option>
-                        <option class="Regions" value="Afrique">Afrique</option>
-                        <option class="Regions" value="Amerique Latine">Amerique Latine</option>
-                    </select>
-                </div>
-            </div>
+      </div>
+      <div class="Sec3">
+        <div class="Ensemble">
+          <label for="stop">Date de fin:</label>
+          <input type="date" id="stop" name="trip-start" value="2023-05-15" min="2003-01-01" max="2023-05-15">
         </div>
-        <div class="Sec2">
-            <div class="Sec3">
-                <div class="Ensemble">
-                    <label id="Graphiques">Graphiques :</label>
-                    <select name="Choix4" id="Ch4">
-                        <option value="">--Sélection--</option>
-                        <option class="Graphiques" value="Graphiques1">Graphiques1</option>
-                        <option class="Graphiques" value="Graphiques2">Graphiques2</option>
-                        <option class="Graphiques" value="Graphiques3">Graphiques3</option>
-                    </select>
-                </div>
-            </div>
-            <div class="Sec3">
-                <div class="Ensemble">
-                    <label id="Satisfaction">Satisfaction client pour ce prix :</label>
-                    <input type="range" id="slider" min="1" max="10" value="5">
-                    <span id="sliderValue">5</span>
-                </div>
-            </div>
+      </div>
+      <div class="Sec3">
+        <input name="" type="button" id="envoyer" class="submit" value="Envoyer" onclick="Clique()" />
+      </div>
+    </div>
+    <div class="Sec2">
+      <div class="Sec3">
+        <div class="Ensemble">
+          <label id="Produit">Produits :</label>
+          <select name="Choix1" id="Ch1">
+            <option value="">--Tous les produits--</option>
+            <option class="Produit"  value="Bananes">Bananes</option>
+          </select>
         </div>
+      </div>
+      <div class="Sec3">
+        <div class="Ensemble">
+          <label id="Achats/Ventes">Achats/Ventes :</label>
+          <select name="Choix2" id="Ch2">
+            <option value="">--Achat et Vente--</option>
+            <option class="Achats/Ventes"  value="Achats">Achats</option>
+            <option class="Achats/Ventes"  value="Ventes">Ventes</option>
+          </select>
+        </div>
+      </div>
+      <div class="Sec3">
+        <div class="Ensemble">
+          <label id="Regions">Régions :</label>
+          <select name="Choix3" id="Ch3">
+            <option value="">--Toutes--</option>
+            <option class="Regions"  value="Europe">Europe</option>
+            <option class="Regions"  value="Afrique">Afrique</option>
+            <option class="Regions"  value="Amerique Latine">Amérique Latine</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="Sec1" id="chart">
-        <svg></svg>
+    <div class="Sec2">
+      <div class="Sec3">
+        <div class="Ensemble">
+          <label id="Graphiques">Graphiques :</label>
+          <select name="Choix4" id="Ch4">
+            <option value="">--Sélection--</option>
+            <option class="Graphiques" value="Graphiques1">En détail</option>
+            <option class="Graphiques" value="Graphiques2">Graphiques2</option>
+            <option class="Graphiques" value="Graphiques3">Graphiques3</option>
+          </select>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="Sec1" id="chart">
+    <!--Objet graphique après sa conception ICI-->
+    <svg></svg>
+  </div>
 
     <script>
-function change() {
+
+
+function Clique() {
+      var selectedValue = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
+      
+      // Effectuez ici l'action souhaitée en fonction de la valeur sélectionnée
+      console.log("Option sélectionnée :", selectedValue);
+      
+      // Exemple d'action : Mettre à jour une partie de la page avec du contenu dynamique
+      var contentElement = document.getElementById("chart");
+      if (selectedValue === "Graphiques1") {
+        contentElement.innerHTML = "<h2>Graphique 1</h2>";
+        // Effectuez ici les opérations nécessaires pour afficher le graphique 1
+      } else if (selectedValue === "Graphiques2") {
+        contentElement.innerHTML = "<h2>Graphique 2</h2>";
+        // Effectuez ici les opérations nécessaires pour afficher le graphique 2
+      } else if (selectedValue === "Graphiques3") {
+        contentElement.innerHTML = "<h2>Graphique 3</h2>";
+        // Effectuez ici les opérations nécessaires pour afficher le graphique 3
+      } else {
+        contentElement.innerHTML = ""; // Efface le contenu si aucune option n'est sélectionnée
+      }
+    }
+/*function change() {
     var selectedElement = document.getElementById("Ch1");
     var selectedValue = selectedElement.value;
 
@@ -165,11 +167,11 @@ function change() {
                 var value2 = +d[seriesKeys[1]];
                 while (week <= 52) {
                     seriesData.push({
-                        key: seriesKeys[0]/*pays donc année?*/,
+                        key: seriesKeys[0],
                         values: [{ x: week, y: value1 }]
                     },
                         {
-                            key: seriesKeys[1]/*pays donc année?*/,
+                            key: seriesKeys[1],
                             values: [{ x: week, y: value2 }]
                         });
                 }
@@ -195,7 +197,7 @@ function change() {
     });
 }
 
-
+*/
 
 
         // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
