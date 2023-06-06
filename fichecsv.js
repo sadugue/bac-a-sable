@@ -91,7 +91,7 @@ Chemin="Fichiers/"+Regions+"/"+Active+"/"+Produits+".csv";
                     var chart = nv.models.lineChart();
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
                     const columnName = 'ending on';
-                    fetch(csvFilePath)
+                    fetch(Chemin)
                         .then(response => response.text())
                         .then(csvData => {
                             getUniqueYears(csvData, columnName, (uniqueYears) => {
