@@ -72,10 +72,14 @@ function Clique() {
                   return { x: +d["week"], y: +d[seriesKeys[j]] };
                 });
 
-                if (values.some((value) => value.y !== 0)) {
+                var nonZeroValues = values.filter(function (d) {
+                  return d.y !== 0;
+                });
+
+                if (nonZeroValues.length > 0) {
                   seriesData.push({
                     key: seriesKeys[j] + " " + year,
-                    values: values.filter((value) => value.y !== 0),
+                    values: nonZeroValues,
                   });
                 }
               }
@@ -94,4 +98,5 @@ function Clique() {
     });
   }
 }
+
 
