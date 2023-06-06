@@ -52,42 +52,42 @@ function Clique() {
       callback(Array.from(years));
     }
 
+
     d3.csv(Chemin, function (data) {
-      nv.addGraph(function () {
-        var chart = nv.models.lineChart();
-        const columnName = "ending on";
-        fetch(Chemin)
-          .then((response) => response.text())
-          .then((csvData) => {
-            getUniqueYears(csvData, columnName, (uniqueYears) => {
-              var seriesData = [];
-
-              for (var i = 0; i < uniqueYears.length; i++) {
-                const year = uniqueYears[i];
-                var countryData = data.filter(function (d) {
-                  return getYear(d["ending on"]) === year;
-                });
-
-                var values = countryData.map(function (d) {
-                  return { x: +d["week"], y: +d[seriesKeys[j]] };
-                });
-
-                // Remplacer les valeurs 0 par les valeurs précédentes du même pays
-                for (var j = 0; j < values.length; j++) {
-                  if (values[j].y === 0 && j > 0) {
-                    values[j].y = values[j - 1].y;
+        nv.addGraph(function () {
+          var chart = nv.models.lineChart();
+          const csvFilePath = "bananas-wholesale-prices_en.csv";
+          const columnName = "ending on";
+          fetch(Chemin)
+            .then((response) => response.text())
+            .then((csvData) => {
+              getUniqueYears(csvData, columnName, (uniqueYears) => {
+                for (var i = 0; i < uniqueYears.length; i++) {
+                  const year = uniqueYears[i];
+                  var countryData = data.filter(function (d) {
+                    return getYear(d["ending on"]) === year;
+                  });
+  
+                  var values = countryData.map(function (d) {
+                    return { x: +d["week"], y: +d[Object.keys(d)[0]] };
+                  });
+  
+                  // Remplacer les valeurs 0 par les valeurs précédentes du même pays
+                  for (var j = 0; j < values.length; j++) {
+                    if (values[j].y === 0 && j > 0) {
+                      values[j].y = values[j - 1].y;
+                    }
                   }
+  
+                  var nonZeroValues = values.filter(function (d) {
+                    return d.y !== 0;
+                  });
+  
+                  seriesData.push({
+                    key: Object.keys(countryData[0])[0] + " " + year,
+                    values: nonZeroValues,
+                  });
                 }
-
-                var nonZeroValues = values.filter(function (d) {
-                  return d.y !== 0;
-                });
-
-                seriesData.push({
-                  key: seriesKeys[j] + " " + year,
-                  values: nonZeroValues,
-                });
-              }
 
               chart.xAxis.axisLabel("Semaines");
               chart.yAxis.axisLabel("Prix au 100 kilos");
