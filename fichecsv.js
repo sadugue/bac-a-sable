@@ -24,9 +24,20 @@ function an(date){
     return a;
 }
 
-jour("2023-05-15");
-mois("2023-05-15");
-an("2023-05-15");
+function comprise(datedeb,date,datefin){
+    if(an(datedeb)<getYear(date)<an(datefin)){
+        if(mois(datedeb)<getMonth(date)<mois(datefin)){
+            if(jour(datedeb)<getDay(date)<jour(datefin)){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    return false;
+}
+
+console.log(comprise("2020-02-05","05-01-14","2023-02-05"));
 
 function Clique() {
 DateDeDébut = document.getElementById("start").value;
