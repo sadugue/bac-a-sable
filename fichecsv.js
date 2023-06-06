@@ -14,7 +14,7 @@ Produits = document.getElementById("Ch1").value;
 Active = document.getElementById("Ch2").value;
 Regions = document.getElementById("Ch3").value;
 Graph = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
-Chemin=Regions+"/"+Active+"/"+Produits;
+Chemin=Regions+"/"+Active+"/"+Produits+".csv";
 
 
 
