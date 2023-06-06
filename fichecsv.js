@@ -12,7 +12,21 @@ function jour(date){
     return j;
 }
 
+function mois(date){
+    var m=date[5]+date[6];
+    console.log(m);
+    return m;
+}
+
+function an(date){
+    var a=date[2]+date[3];
+    console.log(a);
+    return a;
+}
+
 jour("2023-05-15");
+mois("2023-05-15");
+an("2023-05-15");
 
 function Clique() {
 DateDeDébut = document.getElementById("start").value;
