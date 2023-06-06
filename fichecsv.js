@@ -106,9 +106,9 @@ Chemin="Fichiers/"+Regions+"/"+Active+"/"+Produits+".csv";
 
 
             function comprise(datedeb,date,datefin){
-                if(an(datedeb)<getYear(date)<an(datefin)){
-                    if(mois(datedeb)<getMonth(date)<mois(datefin)){
-                        if(jour(datedeb)<getDay(date)<jour(datefin)){
+                if(parseInt(an(datedeb),10)<parseInt(getYear(date),10)<parseInt(an(datefin),10)){
+                    if(parseInt(mois(datedeb),10)<parseInt(getMonth(date),10)<parseInt(mois(datefin),10)){
+                        if(parseInt(jour(datedeb),10)<parseInt(getDay(date),10)<parseInt(jour(datefin),10)){
                             return true;
                         }
                         return false;
