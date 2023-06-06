@@ -75,7 +75,7 @@ function Clique() {
                 if (values.some((value) => value.y !== 0)) {
                   seriesData.push({
                     key: seriesKeys[j] + " " + year,
-                    values: values,
+                    values: values.filter((value) => value.y !== 0),
                   });
                 }
               }
@@ -83,16 +83,15 @@ function Clique() {
               chart.xAxis.axisLabel("Semaines");
               chart.yAxis.axisLabel("Prix au 100 kilos");
 
-              d3.select("#chart svg").datum(seriesData).transition().duration(500).call(chart);
+              d3.select("#chart svg").datum(seriesData).call(chart);
 
               nv.utils.windowResize(function () {
                 chart.update();
               });
-
-              return chart;
             });
           });
       });
     });
   }
 }
+
