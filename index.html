@@ -104,9 +104,103 @@
     </div>
 
     <script>
+function change() {
+    var selectedElement = document.getElementById("Ch1");
+    var selectedValue = selectedElement.value;
+
+    d3.csv(csvFile, function (data) {
+        var dateForm = document.getElementById("dateForm");
+        if (!dateForm) {
+            resetSelection();
+            return;
+        }
+
+        dateForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var startDateInput = document.getElementById("start");
+            var endDateInput = document.getElementById("stop");
+
+            if (!startDateInput || !endDateInput) {
+                resetSelection();
+                return;
+            }
+
+            selectedStartDate = startDateInput.value;
+            selectedEndDate = endDateInput.value;
+
+            if (!selectedStartDate || !selectedEndDate) {
+                resetSelection();
+                return;
+            }
+
+            var startDate = new Date(selectedStartDate);
+            var endDate = new Date(selectedEndDate);
+
+            if (isNaN(startDate) || isNaN(endDate)) {
+                resetSelection();
+                return;
+            }
+
+            if (startDate > endDate) {
+                displayErrorMessage("La date de début doit être inférieure à la date de fin");
+                return;
+            }
+
+            var filteredData = data.filter(function (d) {
+                var date = new Date(d['ending on']);
+                return date >= startDate && date <= endDate;
+            });
+
+            var seriesKeys = Object.keys(data[0]).filter(function (key) {
+                return key !== 'ending on' && key !== 'week';
+            });
+
+            var seriesData = [];
+
+            //var index = 0;
+            data.forEach(function (d) {
+                var week = +d['week'];
+                var value1 = +d[seriesKeys[0]];
+                var value2 = +d[seriesKeys[1]];
+                while (week <= 52) {
+                    seriesData.push({
+                        key: seriesKeys[0]/*pays donc année?*/,
+                        values: [{ x: week, y: value1 }]
+                    },
+                        {
+                            key: seriesKeys[1]/*pays donc année?*/,
+                            values: [{ x: week, y: value2 }]
+                        });
+                }
+            });
+
+            nv.addGraph(function () {
+                var chart = nv.models.lineChart();
+
+                chart.xAxis.axisLabel('Semaines');
+                chart.yAxis.axisLabel('Prix au 100 kilos');
+
+                d3.select('#chart svg')
+                    .datum(seriesData)
+                    .transition().duration(500)
+                    .call(chart);
+
+                nv.utils.windowResize(function () {
+                    chart.update();
+                });
+                return chart;
+            });
+        });
+    });
+}
+
+
+
+
         // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
         // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
-        let eachyears = new Array();
+     /*   let eachyears = new Array();
         var graph = '';
 
         function Clique() {
@@ -189,7 +283,7 @@
                                 for (var i = 0; i < eachyears.length; i++) {
                                     for (var j = 0; j < seriesKeys.length; j++) {
                                         var countryData = data.filter(function(d) {
-                                            return getYear(d['ending on']) === eachyears[i] /*&& d['country'] === seriesKeys[j]*/;
+                                            return getYear(d['ending on']) === eachyears[i] ;
                                         });
                                         var values = countryData.map(function(d) {
                                             return { x: +d['week'], y: +d[seriesKeys[j]] };
@@ -218,7 +312,7 @@
                         });
                 });
             });
-       // }
+       // }*/
     </script>
 </body>
 </html>
