@@ -83,13 +83,29 @@
   </div>
 
     <script>
+var DateDeDébut="";
+var DateDeFin="";
+var Produits="";
+var Active="";
+var Regions="";
+var Graph="";
 
 
 function Clique() {
-      var selectedValue = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
+    var DateDeDébut = document.getElementById("start").value;
+    var DateDeFin = document.getElementById("stop").value;
+    var Produits = document.getElementById("Ch1").value;
+    var Active = document.getElementById("Ch2").value;
+    var Regions = document.getElementById("Ch3").value;
+    var Graph = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
       
       // Effectuez ici l'action souhaitée en fonction de la valeur sélectionnée
-      console.log("Option sélectionnée :", selectedValue);
+      console.log("DateDeDébut sélectionnée :", DateDeDébut);
+      console.log("DateDeFin sélectionnée :", DateDeFin);
+      console.log("Produits sélectionnée :", Produits);
+      console.log("Graphique sélectionnée :", Active);
+      console.log("Regions sélectionnée :", Regions);
+      console.log("Graphique sélectionnée :", Graph);
       
       // Exemple d'action : Mettre à jour une partie de la page avec du contenu dynamique
       var contentElement = document.getElementById("chart");
