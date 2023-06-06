@@ -73,10 +73,12 @@ function Clique() {
             const columnIndex = headers.indexOf(columnName);
             for (let i = 1; i < rows.length; i++) {
                 const rowData = rows[i].split(',');
+                if(rowData[columnIndex]!==""){
                 const dateString = rowData[columnIndex];
-                if (dateString) {
-                    const year = dateString.slice(-2);
-                    years.add(year);
+                    if (dateString && compriseAn(DateDeDebut,dateString,DateDeFin)) {
+                        const year = getYear(dateString);
+                        years.add(year);
+                    }
                 }
             }
             callback(Array.from(years));
@@ -121,13 +123,8 @@ function Clique() {
                                 eachyears[i] = uniqueYears[i];
                             }
 
-                            function Data(key, values) {
-                                this.key = key;
-                                this.values = values;
-                            }
-
                             var seriesKeys = Object.keys(data[0]).filter(function (key) {
-                                return key !== 'ending on' && key !== 'week';
+                                return key !== 'ending on' && key !== 'week' && key!=='' && key!==null;
                             });
 
                             var seriesData = [];
