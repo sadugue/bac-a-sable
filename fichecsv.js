@@ -7,7 +7,7 @@ var Graph="";
 var Chemin="";
 
 function jour(date){
-    var j=date[9];
+    var j=date[8]+date[9];
     console.log(j);
     return j;
 }
