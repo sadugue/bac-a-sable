@@ -98,7 +98,9 @@ function Clique() {
     var Active = document.getElementById("Ch2").value;
     var Regions = document.getElementById("Ch3").value;
     var Graph = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
-      
+    }
+
+
       // Effectuez ici l'action souhaitée en fonction de la valeur sélectionnée
       console.log("DateDeDébut sélectionnée :", DateDeDébut);
       console.log("DateDeFin sélectionnée :", DateDeFin);
@@ -106,22 +108,7 @@ function Clique() {
       console.log("Graphique sélectionnée :", Active);
       console.log("Regions sélectionnée :", Regions);
       console.log("Graphique sélectionnée :", Graph);
-      
-      // Exemple d'action : Mettre à jour une partie de la page avec du contenu dynamique
-      var contentElement = document.getElementById("chart");
-      if (selectedValue === "Graphiques1") {
-        contentElement.innerHTML = "<h2>Graphique 1</h2>";
-        // Effectuez ici les opérations nécessaires pour afficher le graphique 1
-      } else if (selectedValue === "Graphiques2") {
-        contentElement.innerHTML = "<h2>Graphique 2</h2>";
-        // Effectuez ici les opérations nécessaires pour afficher le graphique 2
-      } else if (selectedValue === "Graphiques3") {
-        contentElement.innerHTML = "<h2>Graphique 3</h2>";
-        // Effectuez ici les opérations nécessaires pour afficher le graphique 3
-      } else {
-        contentElement.innerHTML = ""; // Efface le contenu si aucune option n'est sélectionnée
-      }
-    }
+
 /*function change() {
     var selectedElement = document.getElementById("Ch1");
     var selectedValue = selectedElement.value;
