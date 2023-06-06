@@ -105,13 +105,22 @@ Chemin="Fichiers/"+Regions+"/"+Active+"/"+Produits+".csv";
             }
 
 
-            function comprise(datedeb,date,datefin){
-                console.log(getDay(date));
-                console.log(getMonth(date));
+            function comprise(datedeb, date, datefin) {
+                console.log(jour(date));
+                console.log(mois(date));
                 console.log(getYear(date));
-                if(parseInt(an(datedeb),10)<parseInt(getYear(date),10)<parseInt(an(datefin),10)){
-                    if(parseInt(mois(datedeb),10)<parseInt(getMonth(date),10)<parseInt(mois(datefin),10)){
-                        if(parseInt(jour(datedeb),10)<parseInt(getDay(date),10)<parseInt(jour(datefin),10)){
+                if (
+                    parseInt(an(datedeb), 10) <= parseInt(getYear(date), 10) &&
+                    parseInt(getYear(date), 10) <= parseInt(an(datefin), 10)
+                ) {
+                    if (
+                        parseInt(mois(datedeb), 10) <= parseInt(getMonth(date), 10) &&
+                        parseInt(getMonth(date), 10) <= parseInt(mois(datefin), 10)
+                    ) {
+                        if (
+                            parseInt(jour(datedeb), 10) <= parseInt(getDay(date), 10) &&
+                            parseInt(getDay(date), 10) <= parseInt(jour(datefin), 10)
+                        ) {
                             return true;
                         }
                         return false;
