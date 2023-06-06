@@ -100,69 +100,66 @@
 
            function getYear(dateString) {
                 dateString=dateString.toString();
-  if (typeof dateString === 'string') {
-    
-    var dateParts = dateString.split('-');
-    var year = dateParts[2];
-    var lastTwoDigits = year.slice(-2);
-    return lastTwoDigits;
-  }
-  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
-}
+                if (typeof dateString === 'string') {
+                    var dateParts = dateString.split('-');
+                    var year = dateParts[2];
+                    var lastTwoDigits = year.slice(-2);
+                    return lastTwoDigits;
+                }
+                return null; // ou une valeur par défaut si la chaîne de caractères est invalide
+            }
 
-function getMonth(dateString) {
-    dateString=dateString.toString();
-  if (typeof dateString === 'string') {
-    var dateParts = dateString.split('-');
-    var year = dateParts[1];
-    var lastTwoDigits = year.slice(-2);
-    return lastTwoDigits;
-  }
-  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
-}
+            function getMonth(dateString) {
+                dateString=dateString.toString();
+                if (typeof dateString === 'string') {
+                    var dateParts = dateString.split('-');
+                    var year = dateParts[1];
+                    var lastTwoDigits = year.slice(-2);
+                    return lastTwoDigits;
+                }
+                return null; // ou une valeur par défaut si la chaîne de caractères est invalide
+            }
 
-function getDay(dateString) {
-    dateString=dateString.toString();
-  if (typeof dateString === 'string') {
-    var dateParts = dateString.split('-');
-    var year = dateParts[0];
-    var lastTwoDigits = year.slice(-2);
-    return lastTwoDigits;
-  }
-  return null; // ou une valeur par défaut si la chaîne de caractères est invalide
-}
+            function getDay(dateString) {
+                dateString=dateString.toString();
+                if (typeof dateString === 'string') {
+                    var dateParts = dateString.split('-');
+                    var year = dateParts[0];
+                    var lastTwoDigits = year.slice(-2);
+                    return lastTwoDigits;
+                }
+                return null; // ou une valeur par défaut si la chaîne de caractères est invalide
+            }
 
-function getUniqueYears(csvData, columnName, callback) {
-  const years = new Set();
-  const rows = csvData.split('\n');
-  const headers = rows[0].split(',');
-  const columnIndex = headers.indexOf(columnName);
-  for (let i = 1; i < rows.length; i++) {
-    const rowData = rows[i].split(',');
-    const dateString = rowData[columnIndex];
-    if (dateString) {
-      const year = dateString.slice(-2);
-      years.add(year);
-    }
-  }
-  callback(Array.from(years));
-}
+            function getUniqueYears(csvData, columnName, callback) {
+                const years = new Set();
+                const rows = csvData.split('\n');
+                const headers = rows[0].split(',');
+                const columnIndex = headers.indexOf(columnName);
+                for (let i = 1; i < rows.length; i++) {
+                    const rowData = rows[i].split(',');
+                    const dateString = rowData[columnIndex];
+                    if (dateString) {
+                        const year = dateString.slice(-2);
+                        years.add(year);
+                    }
+                }
+                callback(Array.from(years));
+            }
 
-d3.csv("bananas-wholesale-prices_en.csv", function(data) {
-  nv.addGraph(function() {
-    var chart = nv.models.lineChart();
-    const csvFilePath = 'bananas-wholesale-prices_en.csv';
-    const columnName = 'ending on';
-
-    fetch(csvFilePath)
-      .then(response => response.text())
-      .then(csvData => {
-        getUniqueYears(csvData, columnName, (uniqueYears) => {
-          for (var i = 0; i < uniqueYears.length; i++) {
-            eachyears[i] = uniqueYears[i];
-          }
+            d3.csv("bananas-wholesale-prices_en.csv", function(data) {
+                nv.addGraph(function() {
+                var chart = nv.models.lineChart();
+                const csvFilePath = 'bananas-wholesale-prices_en.csv';
+                const columnName = 'ending on';
+                fetch(csvFilePath)
+                    .then(response => response.text())
+                    .then(csvData => {
+                    getUniqueYears(csvData, columnName, (uniqueYears) => {
+                        for (var i = 0; i < uniqueYears.length; i++) {
+                            eachyears[i] = uniqueYears[i];
+                        }
           
-
             function Data(key, values) {
                 this.key = key;
                 this.values = values;
@@ -171,86 +168,46 @@ d3.csv("bananas-wholesale-prices_en.csv", function(data) {
             var seriesKeys = Object.keys(data[0]).filter(function(key) {
                 return key !== 'ending on' && key !== 'week';
             });
-            /*var xValues = data.map(function(d) {
-                return +d['ending on']; // Utiliser les valeurs de la colonne 'week' comme axe des x
-            });*/
-                    
-            /*var seriesData = [];
-                    for (var i = 0; i < eachyears.length; i++) {
-                        for (var j = 0; j < seriesKeys.length; j++) {
-                            seriesData.push({
-                                key: seriesKeys[j] + ' ' + eachyears[i],
-                                values: data.map(function(d) {
-                                    return { x: +d['week'], y: +d[seriesKeys[j]] };
-                                })
-                            });
-                        }
-                    }*/
-                    var seriesData = [];
-for (var i = 0; i < eachyears.length; i++) {
-  for (var j = 0; j < seriesKeys.length; j++) {
-    var countryData = data.filter(function(d) {
-      return getYear(d['ending on']) === eachyears[i] /*&& d['country'] === seriesKeys[j]*/;
-    });
-    var values = countryData.map(function(d) {
-      return { x: +d['week'], y: +d[seriesKeys[j]] };
-    });
-    seriesData.push({
-      key: seriesKeys[j] + ' ' + eachyears[i],
-      values: values
-    });
-  }
-}
 
-//marche
-
-
-                    /*var week52Reached = false;
-                    //console.log(data);
-                    data.forEach(function(d) {
-                        //console.log(d);
-                        var i=0;
-                        var week = +d['week'];
-                        //var endingon = +d['ending on'];
-                        var y=getYear(endingon);
-                        console.log(y);
-                        var value1 = +d[seriesKeys[0]];
-                        var value2 = +d[seriesKeys[1]];
-                    if (!week52Reached) {
-                        seriesData[i+0].values.push({ x: week, y: value1});
-                        seriesData[i+1].values.push({ x: week, y: value2});
-                        if (week === 52) {
-                            week52Reached = true;
-                            i=i+2;
-                        }
-                       
-                    }
-                    week52Reached = false;
-                    });*/
-                    
-                    chart.xAxis
-                        .axisLabel('Semaines');
-        
-                    chart.yAxis
-                        .axisLabel('Prix au 100 kilos');
-        
-                    d3.select('#chart svg')
-                        .datum(seriesData)
-                        .transition().duration(500)
-                        .call(chart);
-        
-                    nv.utils.windowResize(function() {
-                        chart.update();
+            var seriesData = [];
+            for (var i = 0; i < eachyears.length; i++) {
+                for (var j = 0; j < seriesKeys.length; j++) {
+                    var countryData = data.filter(function(d) {
+                        return getYear(d['ending on']) === eachyears[i] /*&& d['country'] === seriesKeys[j]*/;
                     });
-                    return chart;
-                });
+                    var values = countryData.map(function(d) {
+                        return { x: +d['week'], y: +d[seriesKeys[j]] };
+                    });
+                    seriesData.push({
+                        key: seriesKeys[j] + ' ' + eachyears[i],
+                        values: values
+                    });
+                }
+            }
+        
+            chart.xAxis
+                .axisLabel('Semaines');
+        
+            chart.yAxis
+                .axisLabel('Prix au 100 kilos');
+        
+            d3.select('#chart svg')
+                .datum(seriesData)
+                .transition().duration(500)
+                .call(chart);
+        
+            nv.utils.windowResize(function() {
+                chart.update();
+            });
 
+            return chart;
         });
-      })
-      .catch(error => {
+    });/*
+    })
+    .catch(error => {
         console.error('Erreur lors du chargement du fichier CSV :', error);
-      });
-  });
+    });
+});*/
         </script>
         
     </body>
