@@ -72,22 +72,31 @@ function Clique() {
                   return { x: +d["week"], y: +d[seriesKeys[j]] };
                 });
 
+                // Remplacer les valeurs 0 par les valeurs précédentes du même pays
+                for (var j = 0; j < values.length; j++) {
+                  if (values[j].y === 0 && j > 0) {
+                    values[j].y = values[j - 1].y;
+                  }
+                }
+
                 var nonZeroValues = values.filter(function (d) {
                   return d.y !== 0;
                 });
 
-                if (nonZeroValues.length > 0) {
-                  seriesData.push({
-                    key: seriesKeys[j] + " " + year,
-                    values: nonZeroValues,
-                  });
-                }
+                seriesData.push({
+                  key: seriesKeys[j] + " " + year,
+                  values: nonZeroValues,
+                });
               }
 
               chart.xAxis.axisLabel("Semaines");
               chart.yAxis.axisLabel("Prix au 100 kilos");
 
-              d3.select("#chart svg").datum(seriesData).call(chart);
+              d3.select("#chart svg")
+                .datum(seriesData)
+                .transition()
+                .duration(500)
+                .call(chart);
 
               nv.utils.windowResize(function () {
                 chart.update();
@@ -98,5 +107,6 @@ function Clique() {
     });
   }
 }
+
 
 
