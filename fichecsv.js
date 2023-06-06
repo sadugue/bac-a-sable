@@ -4,6 +4,7 @@ var Produits="";
 var Active="";
 var Regions="";
 var Graph="";
+var Chemin="";
 
 
 function Clique() {
@@ -13,6 +14,7 @@ Produits = document.getElementById("Ch1").value;
 Active = document.getElementById("Ch2").value;
 Regions = document.getElementById("Ch3").value;
 Graph = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
+Chemin=Regions+"/"+Active+"/"+Produits;
 
 
 
@@ -23,6 +25,7 @@ Graph = document.getElementById("Ch4").value; // Récupère la valeur sélection
       console.log("Graphique sélectionnée :", Active);
       console.log("Regions sélectionnée :", Regions);
       console.log("Graphique sélectionnée :", Graph);
+      console.log("Chemin :", Chemin);
 
         // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
         // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
