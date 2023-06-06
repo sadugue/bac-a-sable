@@ -6,6 +6,13 @@ var Regions="";
 var Graph="";
 var Chemin="";
 
+function jour(date){
+    date[9];
+    console.log(j);
+    return j;
+}
+
+jour("2023-05-15");
 
 function Clique() {
 DateDeDébut = document.getElementById("start").value;
