@@ -14,7 +14,7 @@ Produits = document.getElementById("Ch1").value;
 Active = document.getElementById("Ch2").value;
 Regions = document.getElementById("Ch3").value;
 Graph = document.getElementById("Ch4").value; // Récupère la valeur sélectionnée
-Chemin=Regions+"/"+Active+"/"+Produits+".csv";
+Chemin=Regions+"Fichiers/"+Active+"/"+Produits+".csv";
 
 
 
@@ -86,7 +86,7 @@ Chemin=Regions+"/"+Active+"/"+Produits+".csv";
                 callback(Array.from(years));
             }
 
-            d3.csv("bananas-wholesale-prices_en.csv", function(data) {
+            d3.csv(Chemin, function(data) {
                 nv.addGraph(function() {
                     var chart = nv.models.lineChart();
                     const csvFilePath = 'bananas-wholesale-prices_en.csv';
