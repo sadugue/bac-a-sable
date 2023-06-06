@@ -24,20 +24,6 @@ function an(date){
     return a;
 }
 
-function comprise(datedeb,date,datefin){
-    if(an(datedeb)<getYear(date)<an(datefin)){
-        if(mois(datedeb)<getMonth(date)<mois(datefin)){
-            if(jour(datedeb)<getDay(date)<jour(datefin)){
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-    return false;
-}
-
-console.log(comprise("2020-02-05","05-01-14","2023-02-05"));
 
 function Clique() {
 DateDeDébut = document.getElementById("start").value;
@@ -117,6 +103,24 @@ Chemin="Fichiers/"+Regions+"/"+Active+"/"+Produits+".csv";
                 }
                 callback(Array.from(years));
             }
+
+
+            function comprise(datedeb,date,datefin){
+                if(an(datedeb)<getYear(date)<an(datefin)){
+                    if(mois(datedeb)<getMonth(date)<mois(datefin)){
+                        if(jour(datedeb)<getDay(date)<jour(datefin)){
+                            return true;
+                        }
+                        return false;
+                    }
+                    return false;
+                }
+                return false;
+            }
+
+
+
+            console.log(comprise("2020-02-05","05-01-14","2023-02-05"));
 
             d3.csv(Chemin, function(data) {
                 nv.addGraph(function() {
