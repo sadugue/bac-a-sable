@@ -45,5 +45,18 @@ h1 {
 }
 
 #chart{
-  height: 50em;
+  height: 55em;
+}
+
+.nvtooltip{
+  color: green;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  position: fixed;
+  transform: translate(0px,0px);
+}
+
+.nvtooltip.x-nvtooltip,
+.nvtooltip.y-nvtooltip {
+    margin-top: 8px;
 }
