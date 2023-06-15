@@ -272,18 +272,20 @@ function Clique() {
                                 const country = countries[j - 2];
                                 const value = +values[j];
         
-                                if (!paysMoyennes.has(country)) {
-                                    paysMoyennes.set(country, new Map());
-                                }
+                                if (value !== 0) {
+                                    if (!paysMoyennes.has(country)) {
+                                        paysMoyennes.set(country, new Map());
+                                    }
         
-                                var yearData = paysMoyennes.get(country);
-                                if (!yearData.has(year)) {
-                                    yearData.set(year, { total: 0, count: 0 });
-                                }
+                                    var yearData = paysMoyennes.get(country);
+                                    if (!yearData.has(year)) {
+                                        yearData.set(year, { total: 0, count: 0 });
+                                    }
         
-                                var yearDataItem = yearData.get(year);
-                                yearDataItem.total += value;
-                                yearDataItem.count++;
+                                    var yearDataItem = yearData.get(year);
+                                    yearDataItem.total += value;
+                                    yearDataItem.count++;
+                                }
                             }
                         }
         
@@ -326,6 +328,7 @@ function Clique() {
             }
             return color;
         }
+        
         
          
 
