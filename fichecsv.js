@@ -55,27 +55,27 @@ function Clique() {
           div2 = document.getElementById('chart').style.visibility='hidden';
         }
         else{
-        function getYear(dateString) {
+          function getYear(dateString) {
             dateString = dateString.toString(); //"05-01-14"
             var y = dateString[6] + dateString[7];
             console.log(y);
             return y;
         }
-
+        
         function getMonth(dateString) {
             dateString = dateString.toString();
             var m = dateString[3] + dateString[4];
             console.log(m);
             return m;
         }
-
+        
         function getDay(dateString) {
             dateString = dateString.toString();
             var d = dateString[0] + dateString[1];
             console.log(d);
             return d;
         }
-
+        
         function getUniqueYears(csvData, columnName, callback) {
             const years = new Set();
             const rows = csvData.split('\n');
@@ -93,11 +93,11 @@ function Clique() {
             }
             callback(Array.from(years));
         }
-
+        
         function compriseAn(DateDeDebut, date, DateDeFin) {
             return an(DateDeDebut) <= getYear(date) && getYear(date) <= an(DateDeFin);
         }
-
+        
         function comprise(datedeb, date, datefin) {
             if (
                 parseInt(an(datedeb), 10) <= parseInt(getYear(date), 10) &&
@@ -119,7 +119,7 @@ function Clique() {
             }
             return false;
         }
-
+        
         d3.csv(Chemin, function (data) {
             nv.addGraph(function () {
                 var chart = nv.models.lineChart();
@@ -131,11 +131,11 @@ function Clique() {
                             for (var i = 0; i < uniqueYears.length; i++) {
                                 eachyears[i] = uniqueYears[i];
                             }
-
+        
                             var seriesKeys = Object.keys(data[0]).filter(function (key) {
                                 return key !== 'ending on' && key !== 'week' && key !== '' && key !== null;
                             });
-
+        
                             var seriesData = [];
                             for (var i = 0; i < eachyears.length; i++) {
                                 for (var j = 0; j < seriesKeys.length; j++) {
@@ -143,14 +143,14 @@ function Clique() {
                                         return getYear(d['ending on']) === eachyears[i] /*&& comprise(DateDeDebut,d['ending on'],DateDeFin)*/;
                                     });
                                     var values = countryData.map(function (d) {
-                                        //if(comprise(DateDeDebut,d['ending on']),DateDeFin)&&(+d[seriesKeys[j]]!==0)){
-                                        return { x: +d['week'], y: +d[seriesKeys[j]] };
-                                        //}
+                                        if (comprise(DateDeDebut, d['ending on'], DateDeFin) && (+d[seriesKeys[j]] !== 0)) {
+                                            return { x: +d['week'], y: +d[seriesKeys[j]] };
+                                        }
                                     });
                                     values = values.filter(function (value) {
-                                        return value.y !== 0;
+                                        return value !== undefined;
                                     });
-                                    if(values!==[]){
+                                    if (values.length > 0) {
                                         seriesData.push({
                                             key: seriesKeys[j] + ' ' + eachyears[i],
                                             values: values
@@ -158,23 +158,23 @@ function Clique() {
                                     }
                                 }
                             }
-
+        
                             chart.xAxis.axisLabel('Semaines');
                             chart.yAxis.axisLabel('Prix au 100 kilos');
-
-
+        
+        
                             d3.select('#chart svg')
                                 .datum(seriesData)
                                 .transition().duration(600)
                                 .call(chart);
-
-
+        
+        
                             nv.utils.windowResize(function () {
                                 chart.update();
                             });
                             return chart;
                         });
-                    });
+                    });        
             });
         });
     }
