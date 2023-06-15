@@ -54,7 +54,7 @@
       </div>
       <div class="Sec3">
         <div class="Ensemble">
-          <label id="Regions">Régions :</label>
+          <label id="Regions">Provenance :</label>
           <select name="Choix3" id="Ch3">
             <option value="">--Toutes--</option>
             <option class="Regions"  value="Europe">Europe</option>
@@ -70,13 +70,17 @@
           <label id="Graphiques">Graphiques :</label>
           <select name="Choix4" id="Ch4">
             <option value="">--Sélection--</option>
-            <option class="Graphiques" value="Graphiques1">En détail</option>
-            <option class="Graphiques" value="Graphiques2">Moyenne</option>
-            <option class="Graphiques" value="Graphiques3">Valeur Max</option>
+            <option class="Graphiques" value="Graphiques1">En détail sur une année</option>
+            <option class="Graphiques" value="Graphiques2">Moyenne par année</option>
+            <option class="Graphiques" value="Graphiques3">Valeur Maximum et minimum par année</option>
           </select>
         </div>
       </div>
     </div>
+  </div>
+  <div class="Sec1" class="hidden">
+    <p id="hidden1">Les champs produits, achats/ventes, provenance et graphiques ne doivent pas être vide</p>
+    <p id="hidden2">Vous ne pouvez pas prendre deux années différentes pour afficher un graphique de type en détail car il deviendrait illisible</p>
   </div>
   <div class="Sec1" id="chart">
     <!--Objet graphique après sa conception ICI-->

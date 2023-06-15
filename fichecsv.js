@@ -39,12 +39,22 @@ function Clique() {
     console.log("Graphique sélectionnée :", Graph);
     console.log("Chemin :", Chemin);
 
-    // Graphique n'utilisant pas de fichier en entrée mais affiche 2 courbes.
-    // Graphique utilisant fichier en entrée et affiche 2 courbes depuis csv.
+    var div = document.getElementById('hidden1').style.visibility='hidden';
+    var div2 = document.getElementById('chart').style.visibility='visible';
+    var div3 = document.getElementById('hidden2').style.visibility='hidden';
+
     var eachyears = new Array();
     //var graph = '';
-
-    if (Graph === "Graphiques1" && Active === "Achats") {  
+    if(Produits === ""||Active === ""||Regions === ""||Graph === ""||Chemin === ""){
+        div = document.getElementById('hidden1').style.visibility='visible';
+        div2=document.getElementById('chart').style.visibility='hidden';
+    }
+    else if (Graph === "Graphiques1" && Active === "Achats") {  
+        if(an(DateDeDebut)!==an(DateDeFin)){
+          div3 = document.getElementById('hidden2').style.visibility='visible';
+          div2 = document.getElementById('chart').style.visibility='hidden';
+        }
+        else{
         function getYear(dateString) {
             dateString = dateString.toString(); //"05-01-14"
             var y = dateString[6] + dateString[7];
@@ -168,10 +178,11 @@ function Clique() {
             });
         });
     }
+    }
     else if (Graph === "Graphiques2" && Active === "Achats"){
         //moyenne pour chaque année
         function getYear(dateString) {
-            dateString = dateString.toString(); //"05-01-14"
+            dateString = dateString.toString(); 
             var y = dateString[6] + dateString[7];
             console.log(y);
             return y;
@@ -191,94 +202,134 @@ function Clique() {
             return d;
         }
 
+
         function getUniqueYears(csvData, columnName, callback) {
             const years = new Set();
+            const countries = new Set();
             const rows = csvData.split('\n');
             const headers = rows[0].split(',');
             const columnIndex = headers.indexOf(columnName);
+            const paysIndex = headers.indexOf('country');
             for (let i = 1; i < rows.length; i++) {
-                const rowData = rows[i].split(',');
-                if (rowData[columnIndex] !== "") {
-                    const dateString = rowData[columnIndex];
-                    if (dateString && compriseAn(DateDeDebut, dateString, DateDeFin)) {
-                        const year = getYear(dateString);
-                        years.add(year);
-                    }
+              const rowData = rows[i].split(',');
+              if (rowData[columnIndex] !== "") {
+                const dateString = rowData[columnIndex];
+                if (dateString && compriseAn(DateDeDebut, dateString, DateDeFin)) {
+                  const year = getYear(dateString);
+                  years.add(year);
+                  const country = rowData[paysIndex];
+                  countries.add(country);
                 }
+              }
             }
-            callback(Array.from(years));
-        }
-
-        function compriseAn(DateDeDebut, date, DateDeFin) {
+            callback(Array.from(years), Array.from(countries));
+          }
+          
+          function compriseAn(DateDeDebut, date, DateDeFin) {
             return an(DateDeDebut) <= getYear(date) && getYear(date) <= an(DateDeFin);
-        }
-
-        function comprise(datedeb, date, datefin) {
+          }
+          
+          function comprise(datedeb, date, datefin) {
             if (
-                parseInt(an(datedeb), 10) <= parseInt(getYear(date), 10) &&
-                parseInt(getYear(date), 10) <= parseInt(an(datefin), 10)
+              parseInt(an(datedeb), 10) <= parseInt(getYear(date), 10) &&
+              parseInt(getYear(date), 10) <= parseInt(an(datefin), 10)
             ) {
+              if (
+                parseInt(mois(datedeb), 10) <= parseInt(getMonth(date), 10) &&
+                parseInt(getMonth(date), 10) <= parseInt(mois(datefin), 10)
+              ) {
                 if (
-                    parseInt(mois(datedeb), 10) <= parseInt(getMonth(date), 10) &&
-                    parseInt(getMonth(date), 10) <= parseInt(mois(datefin), 10)
+                  parseInt(jour(datedeb), 10) <= parseInt(getDay(date), 10) &&
+                  parseInt(getDay(date), 10) <= parseInt(jour(datefin), 10)
                 ) {
-                    if (
-                        parseInt(jour(datedeb), 10) <= parseInt(getDay(date), 10) &&
-                        parseInt(getDay(date), 10) <= parseInt(jour(datefin), 10)
-                    ) {
-                        return true;
-                    }
-                    return false;
+                  return true;
                 }
                 return false;
+              }
+              return false;
             }
             return false;
-        }
-
-        d3.csv(Chemin, function (data) {
+          }
+          d3.csv(Chemin, function (data) {
             nv.addGraph(function () {
-              var chart = nv.models.lineChart();
-              const columnName = 'ending on';
-              fetch(Chemin)
-                .then(response => response.text())
-                .then(csvData => {
-                  getUniqueYears(csvData, columnName, (uniqueYears) => {
-                    for (var i = 0; i < uniqueYears.length; i++) {
-                        eachyears[i] = uniqueYears[i];
-                    }
-
-                    var seriesKeys = Object.keys(data[0]).filter(function (key) {
-                        return key !== 'ending on' && key !== 'week' && key !== '' && key !== null;
+                var chart = nv.models.lineChart();
+                const columnName = 'ending on';
+                fetch(Chemin)
+                    .then(response => response.text())
+                    .then(csvData => {
+        
+                        var paysMoyennes = new Map();
+                        const rows = csvData.split('\n');
+                        var countries = rows[0].split(',').filter(elt => elt !== "");
+                        countries.splice(0, 2)
+        
+                        for (let i = 1; i < rows.length - 1; i++) {
+        
+                            values = rows[i].split(',');
+                            const year = values[1].substring(6, 8)
+        
+                            for (let j = 2; j < countries.length + 2; j++) {
+                                const country = countries[j - 2];
+                                const value = +values[j];
+        
+                                if (!paysMoyennes.has(country)) {
+                                    paysMoyennes.set(country, new Map());
+                                }
+        
+                                var yearData = paysMoyennes.get(country);
+                                if (!yearData.has(year)) {
+                                    yearData.set(year, { total: 0, count: 0 });
+                                }
+        
+                                var yearDataItem = yearData.get(year);
+                                yearDataItem.total += value;
+                                yearDataItem.count++;
+                            }
+                        }
+        
+                        var seriesData = [];
+        
+                        for (const [country, yearData] of paysMoyennes) {
+                            var data = [];
+                            for (const [year, yearDataItem] of yearData) {
+                                var average = yearDataItem.total / yearDataItem.count;
+                                data.push({ x: "20" + year, y: average });
+                            }
+                            seriesData.push({
+                                values: data,
+                                key: country,
+                                color: getRandomColor() // Génère une couleur aléatoire pour chaque pays
+                            });
+                        }
+        
+                        chart.xAxis.axisLabel('Années');
+                        chart.yAxis.axisLabel('Moyenne du Prix au 100 kilos');
+        
+                        d3.select('#chart svg')
+                            .datum(seriesData)
+                            .transition().duration(600)
+                            .call(chart);
+        
+                        nv.utils.windowResize(function () {
+                            chart.update();
+                        });
+                        return chart;
                     });
-                    var seriesData = [];
-                    uniqueYears.forEach(year => {
-                      var yearData = data.filter(d => getYear(d['ending on']) === year && comprise(DateDeDebut, d['ending on'], DateDeFin));
-                      var values = yearData.map(d => ({ x: year, y: +d[seriesKeys[0]] }));
-                      values = values.filter(value => value.y !== 0);
-                      seriesData.push({
-                        key: year,
-                        values: values
-                      });
-                    });
-      
-                    chart.xAxis.axisLabel('Année');
-                    chart.yAxis.axisLabel('Prix au 100 kilos');
-      
-                    d3.select('#chart svg')
-                      .datum(seriesData)
-                      .transition().duration(600)
-                      .call(chart);
-      
-                    nv.utils.windowResize(function () {
-                      chart.update();
-                    });
-                    return chart;
-                  });
-                });
             });
-          });
-    }
-    
+        });
+        
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+         
+
+        }
     else if (Graph === "Graphiques3" && Active === "Achats"){
         //valeur max pour chaque année
     }
