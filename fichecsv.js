@@ -6,7 +6,11 @@ var Regions = "";
 var Graph = "";
 var Chemin = "";
 
-function jour(date) {
+
+
+function Clique() {
+
+  function jour(date) {
     var j = date[8] + date[9];
     return j;
 }
@@ -21,7 +25,29 @@ function an(date) {
     return a;
 }
 
-function Clique() {
+
+function isEndDateBeforeStartDate(startDate, endDate) {
+  const startYear = parseInt(an(startDate), 10);
+  const endYear = parseInt(an(endDate), 10);
+  const startMonth = parseInt(mois(startDate), 10);
+  const endMonth = parseInt(mois(endDate), 10);
+  const startDay = parseInt(jour(startDate), 10);
+  const endDay = parseInt(jour(endDate), 10);
+
+  if (endYear < startYear) {
+    return true;
+  } else if (endYear === startYear) {
+    if (endMonth < startMonth) {
+      return true;
+    } else if (endMonth === startMonth && endDay < startDay) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
     DateDeDebut = document.getElementById("start").value;
     DateDeFin = document.getElementById("stop").value;
     Produits = document.getElementById("Ch1").value;
@@ -42,12 +68,17 @@ function Clique() {
     var div = document.getElementById('hidden1').style.visibility='hidden';
     var div2 = document.getElementById('chart').style.visibility='visible';
     var div3 = document.getElementById('hidden2').style.visibility='hidden';
+    var div3 = document.getElementById('hidden3').style.visibility='hidden';
 
     var eachyears = new Array();
     //var graph = '';
     if(Produits === ""||Active === ""||Regions === ""||Graph === ""||Chemin === ""){
         div = document.getElementById('hidden1').style.visibility='visible';
         div2=document.getElementById('chart').style.visibility='hidden';
+    }
+    else if(isEndDateBeforeStartDate(DateDeDebut,DateDeFin)){
+      div = document.getElementById('hidden3').style.visibility='visible';
+      div2=document.getElementById('chart').style.visibility='hidden';
     }
     else if (Graph === "Graphiques1" && Active === "Achats") {  
         if(an(DateDeDebut)!==an(DateDeFin)){
