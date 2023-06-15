@@ -348,85 +348,115 @@ function Clique() {
     else if (Graph === "Graphiques3" && Active === "Achats"){
         //valeur max pour chaque année
 
-        d3.csv(Chemin, function (data) {
-          nv.addGraph(function () {
-              var chart = nv.models.lineChart();
-              const columnName = 'ending on';
-              fetch(Chemin)
-                  .then(response => response.text())
-                  .then(csvData => {
-
-                      var listeAnnee = new Map();
-                      const rows = csvData.split('\n');
-                      var countries = rows[0].split(',').filter(elt => elt !== "");
-                      countries.splice(0, 2)
-
-                      for (let i = 1; i < rows.length - 1; i++) {
-
-                          values = rows[i].split(',');
-                          const year = values[1].substring(6, 8)
-                          if (!listeAnnee.has(year)) listeAnnee.set(year, { paysMax: "", valMax: 0, paysMin: "", valMin: 1000 });
-
-                          objMaxMin = listeAnnee.get(year)
-
-                          for (let j = 2; j < countries.length + 2; j++) {
-                              if (objMaxMin.valMax < +values[j])
-                                  listeAnnee.set(year, {
-                                      paysMax: countries[j - 2],
-                                      valMax: +values[j],
-                                      paysMin: objMaxMin.paysMin,
-                                      valMin: objMaxMin.valMin
-                                  })
-
-                              else if (+values[j] < objMaxMin.valMin && +values[j] !== 0)
-                                  listeAnnee.set(year, {
-                                      paysMax: objMaxMin.paysMax,
-                                      valMax: objMaxMin.valMax,
-                                      paysMin: countries[j - 2],
-                                      valMin: +values[j]
-                                  })
-                          }
+        d3.csv(Chemin, function(data) {
+          nv.addGraph(function() {
+            var chart = nv.models.lineChart();
+            const columnName = 'ending on';
+        
+            fetch(Chemin)
+              .then(response => response.text())
+              .then(csvData => {
+                var listeAnnee = new Map();
+                const rows = csvData.split('\n');
+                var countries = rows[0].split(',').filter(elt => elt !== "");
+                countries.splice(0, 2)
+        
+                for (let i = 1; i < rows.length - 1; i++) {
+                  values = rows[i].split(',');
+                  const year = values[1].substring(6, 8);
+        
+                  if (compriseAn(DateDeDebut, values[1], DateDeFin)) {
+                    if (!listeAnnee.has(year)) {
+                      listeAnnee.set(year, { paysMax: "", valMax: 0, paysMin: "", valMin: 1000 });
+                    }
+        
+                    objMaxMin = listeAnnee.get(year);
+        
+                    for (let j = 2; j < countries.length + 2; j++) {
+                      if (objMaxMin.valMax < +values[j]) {
+                        listeAnnee.set(year, {
+                          paysMax: countries[j - 2],
+                          valMax: +values[j],
+                          paysMin: objMaxMin.paysMin,
+                          valMin: objMaxMin.valMin
+                        });
+                      } else if (+values[j] < objMaxMin.valMin && +values[j] !== 0) {
+                        listeAnnee.set(year, {
+                          paysMax: objMaxMin.paysMax,
+                          valMax: objMaxMin.valMax,
+                          paysMin: countries[j - 2],
+                          valMin: +values[j]
+                        });
                       }
+                    }
+                  }
+                }
+        
+                var min = [];
+                var max = [];
+        
+                for (const [key, value] of listeAnnee) {
+                  min.push({ x: "20" + key, y: value.valMin });
+                  max.push({ x: "20" + key, y: value.valMax });
+                }
+        
+                var seriesData = [
+                  {
+                    values: max,
+                    key: 'Prix Max',
+                    color: '#ff7f0e'
+                  },
+                  {
+                    values: min,
+                    key: 'Prix Min',
+                    color: '#2ca02c'
+                  }
+                ];
+        
+                chart.xAxis.axisLabel('Années');
+                chart.yAxis.axisLabel('Prix au 100 kilos');
+        
+                d3.select('#chart svg')
+                  .datum(seriesData)
+                  .transition().duration(600)
+                  .call(chart);
+        
+                nv.utils.windowResize(function() {
+                  chart.update();
+                });
+              });
+        
+            return chart;
+          });
+        });
+        
+        function an(date) {
+          var a = date[2] + date[3];
+          return a;
+        }
 
-                      min = []
-                      max = []
-
-                      for (const key of listeAnnee.keys()) {
-                          min.push({ x: "20" + key, y: listeAnnee.get(key).valMin })
-                          max.push({ x: "20" + key, y: listeAnnee.get(key).valMax })
-                      }
-
-                      var seriesData = [
-                          {
-                              values: max,
-                              key: 'Prix Max',
-                              color: '#ff7f0e'
-                          },
-                          {
-                              values: min,
-                              key: 'Prix Min',
-                              color: '#2ca02c'
-                          }
-                      ];
-
-
-                      chart.xAxis.axisLabel('Années');
-                      chart.yAxis.axisLabel('Prix au 100 kilos');
-
-
-                      d3.select('#chart svg')
-                          .datum(seriesData)
-                          .transition().duration(600)
-                          .call(chart);
-
-
-                      nv.utils.windowResize(function () {
-                          chart.update();
-                      });
-                      return chart;
-                  })
-          })
-      })
+        function compriseAn(DateDeDebut, date, DateDeFin) {
+          return (
+            parseInt(an(DateDeDebut), 10) <= parseInt(getYear(date), 10) &&
+            parseInt(getYear(date), 10) <= parseInt(an(DateDeFin), 10)
+          );
+        }
+        
+        function getYear(dateString) {
+          dateString = dateString.toString();
+          var y = dateString[6] + dateString[7];
+          return y;
+        }
+        
+        function getRandomColor() {
+          var letters = '0123456789ABCDEF';
+          var color = '#';
+          for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        }
+        
     }
 }
 
